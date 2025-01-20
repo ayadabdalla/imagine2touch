@@ -1,0 +1,43 @@
+repo_directory: "imagine2touch"
+mode: "touchtoimage"
+true_object: "square"
+experiment_name: "square_1" # name of the experiment followed by the number of the experiment
+data_path: "src/imagine2touch/task/data"
+task_path: "src/imagine2touch/task"
+n_contacts: 10
+# objects_names: "star,square,hexagon,parallelogram,flower" 
+objects_names: "square,star,cylinder"
+model_path: ${path:"models/imagine2touch_models"}
+normal_looking_distance: 0.04 #in m projected on the normal vector from the tcp to the contact surface of the object
+model_id: 1
+human_task_checking_enabled: false
+new_safe_points: False
+convexity_tolerance: 0.003
+robot_flange_z_tolerance: 0.015 # raise it a little bit because the robot takes a dip to reach it
+robot_tool_cosine_tolerance: 0.5
+robot_flange_in_tcp: "0.015,0.09,0.058"
+reskin_side_length: 0.0085
+pos_tolerance: 0.008 # maximum threshold to ignore failed move exception from libfranka
+image_size: 48
+masks:
+  use_min_depth: True
+  tcp_z_distance: 0.04 #in m
+  blob_filter: False
+  tolerance_in_mm: 1
+  blob_connectivity: 8
+  wcamera_in_tcp_z: -0.06417182 #currently not used
+  dups_k: 4
+  dups_threshold: 10 #in mm
+  k_means_accuracy: 1
+  k_means_max_iter: 10
+  k_means_n_init: 10
+  erode: False
+  erode_kernel_size: 6
+  min_occurences: 100
+crop:
+  minz: 0.013
+  miny: -0.05
+  minx: -0.05
+  maxz: 0.1
+  maxx: 0.05
+  maxy: 0.05

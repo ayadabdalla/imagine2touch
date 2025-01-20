@@ -1,0 +1,21 @@
+image_size: 48
+# object_name: "hexagon,star,flower,parallelogram,cutter"
+object_name: "square"
+save: True
+repository_directory: imagine2touch
+experiment_dir: src/imagine2touch/data_collection/data
+# experiment_dir: ${path:"Archive"}
+masks:
+  use_min_depth: True
+  tcp_z_distance: 0.04 #in m
+  blob_filter: False
+  tolerance_in_mm: 2
+  blob_connectivity: 8
+  wcamera_in_tcp_z: -0.064
+  dups_k: 4 #depth processing related
+  dups_threshold: 10 #in mm #depth processing related
+  k_means_accuracy: 1 #depth processing related
+  k_means_max_iter: 20 #depth processing related
+  k_means_n_init: 20 #depth processing related
+  erode: False
+  erode_kernel_size: 6

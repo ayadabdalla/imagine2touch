@@ -1,0 +1,19 @@
+save_directory: ${path:"task/data"}
+object_name: cylinder
+minimum_robot_height: 0.15 # minimum height of the robot to start the experiment  
+pos_tolerance: 0 # maximum threshold to ignore failed move exception from libfranka
+crop:
+  minz: 0.01
+  miny: -0.05
+  minx: -0.05
+  maxz: 0.1
+  maxx: 0.05
+  maxy: 0.05
+filter_overwrite: True # if True, the filtered point cloud will overwrite the original point cloud
+starting_corner_in_world: "-0.008, 0.03, 0.1, 1" # starting corner (bottom left in the vurrent setting)of the object view circle in the world frame
+r: 0.03 # radius of the viewing circle in m
+orientation_step: 0.64 # in rad
+translation_step: 0.01 # in m
+initial_orientation: 0 # in rad
+fixed_roll: 0 # in rad
+max_inclination: 45 # in deg

@@ -1,0 +1,6 @@
+experiment_dir: ${path:"data_collection/data"}
+object: cutter
+comparison_object: square
+image_size: 48
+model: False
+points: false

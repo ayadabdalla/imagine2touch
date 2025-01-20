@@ -1,0 +1,48 @@
+repository_directory: imagine2touch
+experiment_directory: src/imagine2touch/data_collection/data
+object_name: cylinder
+new_experiment: False
+copy_experiment: True
+reskin_side_length: 0.01
+robot_flange_in_tcp: "0.015,0.09,0.058"
+minimum_robot_height: 0.2
+camera_looking_safety_tolerance_in_world: 0.005
+N: 36
+franka_exception_pos_tolerance: 0.004
+pos_tolerance: ${franka_exception_pos_tolerance}
+experiment_number: 2
+lighting: room_light
+normal_looking_distance: 0.04
+pcd_offset: "[0,0,0]"
+number_of_points: ""
+termination: ""
+sensor_id: 1
+pad_id: 1
+potential_problems: ""
+f_max_contact: 8
+T_max_contact: 8
+f_max_away: 20
+T_max_away: 20
+reskin_threshold: 25
+movement_wrapper_step_size: 0.004
+movement_wrapper_dt: 0.1
+reskin_ambient_recording_distance_to_contact_threshold: 0.01
+ambient_every_reading: True
+crop:
+  minz: 0.01
+  miny: -0.05
+  minx: -0.05
+  maxz: 0.05
+  maxx: 0.05
+  maxy: 0.05
+safety:
+  one: 0.25
+  two: 0.003
+  three: 0.01
+starting_corner_in_world: "-0.008, 0.03, 0.065, 1"
+r: 0.03
+orientation_step: 0.64
+translation_step: 0.01
+initial_orientation: 0
+fixed_roll: 0
+max_inclination: ${quarter_pi:x}

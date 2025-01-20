@@ -1,0 +1,79 @@
+# Use this file to configure the training, validation, test, architecture and visualization of the visuo-tactile model #
+#paths
+repository_dir: "imagine2touch"
+experiment_dir: src/imagine2touch/data_collection/data
+test_dir: src/imagine2touch/data_collection/data
+out: src/imagine2touch/models/imagine2touch_models
+model_path: src/imagine2touch/models/imagine2touch_models
+#data set
+objects_names: "hexagon,parallelogram"
+test_objects_names: "cylinder,star"
+# preprocessing
+image_type: "masks" # "depth" or "masks" or "processed_depth" or "masked_depth" or "masked_depth_processed"
+image_size: 48
+masks_filter: False
+tactile_filter: False
+tactile_filter_threshold: -1
+binary: True # tactile data is in binary or ascii format
+# training script specifications
+save: False # save infered test data
+regularize: False
+inference: False
+model_id: ${model_id:model_id}
+show_samples: True # show samples of infered test data after training
+validation_split_ratio: 0.5
+training_split_ratio: -1 # only used when split_training_set is True
+split_training_set: False #if we are testing from the same objects data sets as training
+masks_threshold: 0.5 # to convert soft masks to binary masks
+kl_loss_scale: 10 # if regularization klosses are used and configured, set the scale of the kl losses
+tactile_loss_scale: 10 # if tactile loss is used and configured, set the scale of the tactile loss
+validation_epochs_step: 10
+multiply_mask_losses: False # compose l_masks and l_masks_2 losses by multiplying them
+infer_output_type: ${infer_type:infer_type} #"image" or "tactile"
+ablate_embedding: False
+constant_tactile_prediction: False
+
+model:
+  #main architecture
+  tactile_decoder_hidden: 10
+  images_decoder_hidden: 10
+  images_encoder_hidden: -1
+  image_embedding_dim: 5 # only used when encode_image is True
+  #input and output shapes
+  images_input_shape: 2304
+  images_output_shape: 2304
+  tactile_input_shape: 15
+  #architecture edits
+  cnn_images_encoder: True
+  var_ae: false
+
+parameters:
+  epochs: 2
+  lr: 5e-4
+  lr_decay: False
+  lr_decay_step: -1
+  lr_decay_rate: 0.8
+  bs: 128
+  l_image: "no_loss"
+  l_sensor: "mse"
+  l_masks: "bce"
+  l_masks_2: "no_loss" #only used when multiply_mask_losses is True
+  l_regularization: "no_loss"
+  l_code: "no_loss"
+  kl_masks: False
+  kl_image: False
+  kl_sensor: False
+  optimizer: "adam" #"adam" or "sgd"
+
+# non-adapted/tested configurations to the current version of the code, do not modify them.
+offline_task: False
+contrast_filter: False
+code_loss_scale: 10
+n_image_clusters: -1
+reuse_tactile_decoder_in_encode_image: False # only used when encode_image is True
+fuse_encode_image_code: False
+rgbd: False # needs manual preprocessing
+rgb_images_decoder_hidden: -1 # only used when rgbd is True
+connect_image_encoder_in_encode_image: False # only used when encode_image is True
+connect_tactile_encoder_in_encode_image: False # only used when encode_image is True
+

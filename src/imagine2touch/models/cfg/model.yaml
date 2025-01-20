@@ -1,0 +1,28 @@
+# Use this file to instantiate the visuo-tactile model directly
+_target_: reskin.models.models.AE
+#main architecture
+tactile_embedding_dim: 8
+tactile_encoder_hidden: 200
+tactile_decoder_hidden: 500
+images_decoder_hidden: 2000 # set as tactile_encoder_hidden when reuse_tactile_decoder_in_encode_image is True
+#input and output shapes
+images_input_shape: 2304
+images_output_shape: 2304
+tactile_input_shape: 15
+#add auxiliary losses
+aux_reconstruction: true
+rgbd: False # needs manual preprocessing
+rgb_gray: False
+rgb_images_decoder_hidden: -1 # only used when rgbd is True
+#architecture edits
+cnn_images_encoder: False
+var_ae: True
+encode_tactile: False
+#double embedding architecture
+encode_image: True # must be activated when encode tactile is false
+images_encoder_hidden: 200 # only used when encode_image is True
+image_embedding_dim: 8 # only used when encode_image is True and Fuse_encode_image_code is False
+connect_image_encoder_in_encode_image: True # only used when encode_image is True
+connect_tactile_encoder_in_encode_image: False # only used when encode_image is True
+reuse_tactile_decoder_in_encode_image: False # only used when encode_image is True
+fuse_encode_image_code: False

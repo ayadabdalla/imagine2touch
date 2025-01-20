@@ -1,0 +1,19 @@
+_target_: reskin.models.models.AE
+#main architecture
+tactile_embedding_dim: -1
+tactile_encoder_hidden: -1
+tactile_decoder_hidden: 10
+images_decoder_hidden: 10
+images_encoder_hidden: -1 # only used when encode_image is True
+image_embedding_dim: 5 # only used when encode_image is True
+#input and output shapes
+images_input_shape: 2304
+images_output_shape: 2304
+tactile_input_shape: 15
+#add auxiliary losses
+aux_reconstruction: true
+#architecture edits
+cnn_images_encoder: True
+var_ae: False
+encode_tactile: ${encode_tactile:encode_tactile}
+encode_image: ${encode_image:encode_image}
