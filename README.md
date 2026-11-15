@@ -1,5 +1,5 @@
-## This repo is currently not maintained
- Please contact abdalla.ayad@utn.de for inquiries.
+## This repo will be updated soon :) 
+ Please contact abdallahayman772@gmail.com for inquiries.
  #
  ### Support
  I can provide support, useful legacy code snippets, insights, and dev-history, if needed, when using or replicating this work.
