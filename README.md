@@ -57,9 +57,17 @@ python scripts/run_benchmark.py        # run the experiments
 python scripts/report_benchmark.py     # tables and the t-SNE figure, into results/benchmark/
 ```
 
-The experiments are the paper's. Three run on the recorded data. The fourth, object recognition, was
-done on the robot in the paper; here a simulated robot repeats it on the recorded scans and signals,
-as an alternative that needs no hardware.
+The benchmark runs the paper's two experiments:
+
+- **Shape classification** (Table I): name the stamp pressed into the sensor from its signal.
+- **Object recognition** (Table II): done on the robot in the paper; here a simulated robot repeats it on
+  the recorded scans and signals, as an alternative that needs no hardware.
+
+and measures two parts of its method, which the paper describes but does not evaluate by themselves:
+
+- **Correspondence** (Fig. 2): do touches with similar masks give similar signals?
+- **Touch prediction** (Sec. II): train the model and measure how well it predicts the signal of objects
+  it has not seen.
 
 Every setting is in `configs/benchmark.yaml`. A stopped run continues where it left off.
 
@@ -74,17 +82,21 @@ python scripts/report_benchmark.py --results results/v6
 
 ## Recognising objects by touch
 
-Train the model, then let a robot recognise an object by touching it:
+Outside the benchmark, two scripts train the touch model and recognise a single object with it. The
+first trains the model on the training objects of the configuration and saves it. The second puts an object in front of a robot
+that does not know which one it is: the robot touches it, compares each touch with what the model
+predicts for every candidate object, and names the candidate that fits best. `--help` lists what each
+script lets you choose.
 
 ```bash
 python -m imagine2touch.experiments.scripts.train_model
 python -m imagine2touch.procedures.scripts.recognize_object --simulate --object star
 ```
 
-With `--simulate` no hardware is needed: a simulated robot touches the scan of one of the paper's
-objects and feels the signals the real sensor recorded there. Without it, the same code drives a
-Franka arm, a ReSkin and a RealSense camera. [Running on the robot](docs/running_on_the_robot.md)
-covers that setup, from calibrating the camera to collecting new touches.
+With `--simulate` no hardware is needed: a simulated robot touches the scan of the object and feels
+the signals the real sensor recorded there. Without it, the same code drives a Franka arm, a ReSkin
+and a RealSense camera. [Running on the robot](docs/running_on_the_robot.md) covers that setup, from
+calibrating the camera to collecting new touches.
 
 ## What depends on what
 
