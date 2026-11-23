@@ -1,0 +1,174 @@
+This patch derives from robot_io (https://github.com/lukashermann/robot_io, commit 14cc2ae) and is
+provided under that project's terms, not under the licence of this repository.
+
+diff --git a/robot_io_ros/launch/panda_server.launch b/robot_io_ros/launch/panda_server.launch
+index e0b0e79..6abe29e 100644
+--- a/robot_io_ros/launch/panda_server.launch
++++ b/robot_io_ros/launch/panda_server.launch
+@@ -1,7 +1,8 @@
+ <launch>
+-    <node name="panda_ros_server" pkg="robot_io_ros" type="robot_io_server.py" output="screen" cwd="node">
++    <node name="robot_io_ros_server" pkg="robot_io_ros" type="robot_io_server.py" output="screen" cwd="node">
+          <param name="hydra_config_path" value="../../../../libs/robot_io/robot_io/conf"/>
+          <!-- <param name="hydra_robot_config" value="robot/panda_frankx_interface_vr"/> -->
+          <param name="hydra_robot_config" value="panda_teleop"/>
++         <remap from="~joint_states" to="/joint_states"/>
+     </node>
+ </launch>
+\ No newline at end of file
+diff --git a/robot_io_ros/scripts/robot_io_server.py b/robot_io_ros/scripts/robot_io_server.py
+index 063328a..b2991dd 100755
+--- a/robot_io_ros/scripts/robot_io_server.py
++++ b/robot_io_ros/scripts/robot_io_server.py
+@@ -5,9 +5,10 @@ import pickle
+ import hydra
+ import os
+ 
+-from geometry_msgs.msg import Pose       as PoseMsg
++from geometry_msgs.msg import Pose          as PoseMsg, \
++                              WrenchStamped as WrenchStampedMsg
+ from sensor_msgs.msg   import JointState as JointStateMsg
+-from std_msgs.msg      import UInt8MultiArray as UInt8MultiArrayMsg
++from std_msgs.msg      import UInt8MultiArray as UInt8MultiArrayMsg, String
+ 
+ from robot_io.robot_interface.base_robot_interface import BaseRobotInterface
+ 
+@@ -33,10 +34,18 @@ def quat2np(quat_msg):
+ class RobotServer(BaseRobotInterface):
+     def __init__(self, robot, state_frequency=50):
+         self.robot = robot
+-
+-        self.pub_state = rospy.Publisher('~joint_state', JointStateMsg, 
+-                                                         queue_size=1, 
+-                                                         tcp_nodelay=True)
++        self.lock = False
++        self.pub_state = rospy.Publisher('~joint_states', JointStateMsg, 
++                                                          queue_size=1, 
++                                                          tcp_nodelay=True)
++        self._js_msg = JointStateMsg()
++        self._js_msg.name = [f'panda_joint{x+1}' for x in range(7)]
++
++        self.pub_wrench = rospy.Publisher('~F_ext', WrenchStampedMsg, 
++                                                    queue_size=1, 
++                                                    tcp_nodelay=True)
++        self._ws_msg = WrenchStampedMsg()
++        self._ws_msg.header.frame_id = 'panda_hand_tcp'
+ 
+         self.pub_pickle_state = rospy.Publisher('~pickle_state', 
+                                                  UInt8MultiArrayMsg, 
+@@ -47,6 +56,10 @@ class RobotServer(BaseRobotInterface):
+                                                                 PoseMsg, 
+                                                                 callback=self.move_async_cart_pos_abs_ptp, 
+                                                                 queue_size=1)
++        self.sub_lol = rospy.Subscriber('~lol', 
++                                        String, 
++                                        callback=self.lol, 
++                                        queue_size=1)
+         self.sub_move_async_cart_pos_abs_lin = rospy.Subscriber('~move_async_cart_pos_abs_lin', 
+                                                                 PoseMsg, 
+                                                                 callback=self.move_async_cart_pos_abs_lin, 
+@@ -71,6 +84,11 @@ class RobotServer(BaseRobotInterface):
+         self.srv_move_cart_pos_abs_ptp = rospy.Service('~move_cart_pos_abs_ptp', 
+                                                        PoseGoalSrv,
+                                                        self.move_cart_pos_abs_ptp)
++
++        self.srv_move_cart_pos_abs_lin = rospy.Service('~move_cart_pos_abs_lin', 
++                                                        PoseGoalSrv,
++                                                        self.move_cart_pos_abs_lin)
++
+         self.srv_move_joint_pos = rospy.Service('~move_joint_pos', 
+                                                 JointGoalSrv,
+                                                 self.move_joint_pos)
+@@ -93,38 +111,82 @@ class RobotServer(BaseRobotInterface):
+ 
+         self._state_timer = rospy.Timer(rospy.Duration(1 / state_frequency), self._cb_state_tick)
+ 
+-    def _cb_state_tick(self, *args):
+-        state = self.robot.get_state()
++    def lol(self, string):
++        rospy.loginfo(string.data)
+ 
+-        # print(state['gripper_opening_width'])
+-        
+-        pickle_state = UInt8MultiArrayMsg()
+-        pickle_state.data = pickle.dumps(state)
+-        self.pub_pickle_state.publish(pickle_state)
++    def _cb_state_tick(self, *args):
++        if not (self.lock):
++            state = self.robot.get_state()
++
++            # print(state['gripper_opening_width'])
++            
++            pickle_state = UInt8MultiArrayMsg()
++            pickle_state.data = pickle.dumps(state)
++            self.pub_pickle_state.publish(pickle_state)
++            
++            self._js_msg.position = list(state['joint_positions'])
++            self._js_msg.header.stamp = rospy.Time.now()
++            self.pub_state.publish(self._js_msg)
++
++            ft = state['force_torque']
++            self._ws_msg.wrench.force.x  = ft[0]
++            self._ws_msg.wrench.force.y  = ft[1]
++            self._ws_msg.wrench.force.z  = ft[2]
++            self._ws_msg.wrench.torque.x = ft[3]
++            self._ws_msg.wrench.torque.y = ft[4]
++            self._ws_msg.wrench.torque.z = ft[5]
++            self._ws_msg.header.stamp = self._js_msg.header.stamp
++            self.pub_wrench.publish(self._ws_msg)
+ 
+     def move_to_neutral(self, *args):
+         """
+         Move robot to initial position defined in robot conf. This method is blocking.
+         """
+         return PoseGoalResMsg(pickle.dumps(self.robot.move_to_neutral()))
++    
++    def move_cart_pos_abs_lin(self,req : PoseGoalReqMsg):
++        self.lock=True
++        print("move sync lin called")
++        ret=self.robot.move_cart_pos_abs_lin(point2np(req.tcp_goal.position),
++                                               quat2np(req.tcp_goal.orientation))
++        self.lock=False
++        return PoseGoalResMsg(pickle.dumps(ret))
+ 
+     def move_cart_pos_abs_ptp(self, req : PoseGoalReqMsg):
+-        ret = self.robot.move_cart_pos_abs_ptp(point2np(req.tcp_goal.position),
+-                                               quat2np(req.tcp_goal.orientation))
++        self.lock=True
++        print("move sync ptp called")
++        try:
++            ret=self.robot.move_cart_pos_abs_ptp(point2np(req.tcp_goal.position),
++                                                quat2np(req.tcp_goal.orientation))
++        except BaseException as e:
++            raise rospy.service.ServiceException
++        if ret is None or (not ret):
++            print("move failed")
++            self.lock=False
++            raise rospy.service.ServiceException
++        self.lock=False
+         return PoseGoalResMsg(pickle.dumps(ret))
+ 
++
+     def move_joint_pos(self, req : JointGoalReqMsg):
+         ret = self.robot.move_joint_pos(req.joint_goal)
+ 
+         return JointGoalResMsg(pickle.dumps(ret))
+ 
+     def move_async_cart_pos_abs_ptp(self, pose_msg : PoseMsg):
++        self.lock=True
++        print("move async ptp called")
+         self.robot.move_async_cart_pos_abs_ptp(point2np(pose_msg.position),
+                                                quat2np(pose_msg.orientation))
++        self.lock=False
++
+ 
+     def move_async_cart_pos_abs_lin(self, pose_msg : PoseMsg):
+-        self.robot.move_async_cart_pos_abs_lin(point2np(pose_msg.position),
++        self.lock=True
++        print("move async lin called")
++        ret=self.robot.move_async_cart_pos_abs_lin(point2np(pose_msg.position),
+                                                quat2np(pose_msg.orientation))
++        self.lock=False
+ 
+     def move_async_cart_pos_rel_ptp(self, pose_msg : PoseMsg):
+         self.robot.move_async_cart_pos_rel_ptp(point2np(pose_msg.position),

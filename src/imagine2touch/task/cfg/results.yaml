@@ -1,6 +1,0 @@
-data: 'baseline'
-results_directory: ${path:"task/results"}
-objects_names: square,star,parallelogram
-title: 'Baseline'
-dataset: "Simple Toys"
-

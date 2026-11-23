@@ -128,7 +128,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-.vscode/launch.json
+.vscode/
 
 # add data to gitignore
 src/imagine2touch/data_collection/data
@@ -141,3 +141,11 @@ src/imagine2touch/visualization/visualization_data
 # add wandb to gitignore
 wandb
 
+
+# Imagine2touch
+.venv/
+data/*
+!data/README.md
+results/
+/scans/
+/calibration/
