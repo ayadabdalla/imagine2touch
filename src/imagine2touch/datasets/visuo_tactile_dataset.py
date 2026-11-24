@@ -25,7 +25,7 @@ class VisuoTactileDataset:
     One row per approach of the robot.
 
     Touch
-      signal            (N, 15) the reading at contact minus the reading just before it: three field
+      signal            (N, 15) how much the reading changed at contact, |reading - ambient|: three field
                         components for each magnetometer, in the order centre, top, right, bottom, left
       reading, ambient  (N, 15) the two readings themselves
       outcome           (N,) what ended the approach: "sensor" the reading jumped, "wrench" the robot
@@ -63,7 +63,7 @@ class VisuoTactileDataset:
         self.objects, self.shapes = [str(o) for o in z["objects"]], [str(s) for s in z["shapes"]]
         self.object, self.shape, self.experiment = z["object"], z["shape"], z["experiment"]
         self.outcome = np.array([ApproachOutcome.label_of(int(code)) for code in z["outcome"]])
-        self.signal, self.reading, self.ambient = z["signal"], z["reading"], z["ambient"]
+        self.signal, self.reading, self.ambient = np.abs(z["signal"]), z["reading"], z["ambient"]
         self.wrench, self.joints, self.camera_to_sensor = z["wrench"], z["joints"], z["camera_to_sensor"]
         self.depth, self.depth_processed, self.mask, self.rgb = z["depth"], z["depth_processed"], z["mask"], z["rgb"]
         self.pose = [Pose(R, t) for R, t in zip(z["pose_R"], z["pose_t"])]

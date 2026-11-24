@@ -12,8 +12,8 @@ def learnable(n=160, seed=0):
     left, right = rng.random(n), rng.random(n)
     images = np.zeros((n, 48, 48), np.float32)
     images[:, :, :24], images[:, :, 24:] = left[:, None, None], right[:, None, None]
-    signal = np.outer(left, np.linspace(1, 15, 15)) - np.outer(right, np.linspace(15, 1, 15))
-    return images, signal + rng.normal(0, 0.05, signal.shape)
+    signal = np.outer(left, np.linspace(1, 15, 15)) + np.outer(right, np.linspace(15, 1, 15))
+    return images, np.abs(signal + rng.normal(0, 0.05, signal.shape))        # a signal is the size of a change
 
 
 @pytest.mark.parametrize("architecture", sorted(ARCHITECTURES))

@@ -30,7 +30,7 @@ def test_the_visuo_tactile_dataset():
     assert np.median([t.scan(int(t.object[i])).distance_to(t.commanded[i].t) for i in flower]) < 0.05
     assert np.median([t.distance_to_scan(i, int(t.object[i])) for i in flower]) < 1.5         # and the sensor stops on it
     assert t.signal.shape[1] == 15 and t.mask.shape[1:] == (48, 48)
-    assert t.signal == pytest.approx(t.reading - t.ambient, abs=1e-3)
+    assert t.signal == pytest.approx(np.abs(t.reading - t.ambient), abs=1e-3)
     # the stored masks follow the rule of preprocessing.contact_mask
     assert (ContactMask()(t.depth_processed[paper]) == t.mask[paper]).mean() > 0.97
     # the fitted sensor sits 125 mm in front of the flange, and the robot stops within millimetres of its target

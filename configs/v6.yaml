@@ -14,7 +14,6 @@ data:
 model:                      # the thesis's training (AIS repository, commit e1fe6d0f of 31 August 2023)
   architecture: mlp         # 2304 - 200 - 200 - 5, then 500 to the signal and 2000 to the mask
   scaling: quantile         # every value to its rank among the training signals, 0 to 1
-  absolute: true            # the size of every value: |reading - ambient|
   epochs: 131
   patience: null
   lr: 1.0e-3

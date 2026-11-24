@@ -26,7 +26,8 @@ A second dataset asks whether the sensor can tell shapes smaller than itself apa
 
 <p align="center">
   <img src="assets/stamps_overview.png" alt="The five stamps and what each does to the sensor" width="100%">
-  <br><em>The shape classification dataset: 1,280 presses of five stamps into the mounted sensor.</em>
+  <br><em>The shape classification dataset: 1,280 presses of five stamps into the mounted sensor. A
+  stamp fits the finger in two ways, turned by 180 degrees to each other; which one was used was not recorded.</em>
 </p>
 
 ## Getting started

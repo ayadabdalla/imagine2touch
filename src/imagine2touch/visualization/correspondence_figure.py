@@ -37,27 +37,24 @@ class CorrespondenceFigure:
     def __init__(self, selection, settings, clusters):
         self.settings, self.clusters = settings, clusters
         dataset, rows = selection.dataset, selection.rows
-        # the script turns every camera image a quarter turn and draws the cross as it is (centre, top, right, bottom, left)
-        self.masks = np.rot90(dataset.mask[rows].astype(float), k=1, axes=(1, 2))
-        self.rgb = np.rot90(dataset.rgb[rows], k=1, axes=(1, 2))
+        # the script laid out the masks after a turn by 90 degrees; they are drawn as the tactile image is laid out
+        self.turned = np.rot90(dataset.mask[rows].astype(float), k=1, axes=(1, 2))
+        self.masks = TactileImage.aligned(dataset.mask[rows].astype(float))
+        self.rgb = TactileImage.aligned(dataset.rgb[rows], colour=True)
         self.tactile = self.visualisation(dataset.signal[rows])
         self.shape = np.asarray(selection.shape)
         # the order in which the script went through the touches: object by object, as its configuration listed them
         rank = [self.OBJECTS.index(name) if name in self.OBJECTS else len(self.OBJECTS) for name in self.shape]
         self.order = np.argsort(rank, kind="stable")
 
-    GREY = (0.2989, 0.5870, 0.1140)         # the weights of red, green and blue in a grey picture
-
-    @classmethod
-    def visualisation(cls, signal):
+    @staticmethod
+    def visualisation(signal):
         """
-        (n, 3, 3) tactile images as the paper draws them: at each magnetometer the sizes of the three
-        components of the change of the field, weighted by GREY and summed.  The paper's code took the
+        (n, 3, 3) tactile images as the paper draws them (TactileImage.grey).  The paper's code took the
         size of every component when it subtracted the reading out of contact (`subtract_ambient` in
-        its reskin_calibration/dataset.py).  A value of exactly zero is left empty, as are the corners,
-        where no magnetometer sits.
+        its reskin_calibration/dataset.py).  A value of exactly zero is left empty.
         """
-        image = np.abs(TactileImage.of(signal)) @ np.array(cls.GREY)
+        image = TactileImage.grey(signal)
         return np.where(image == 0, np.nan, image)
 
     @staticmethod
@@ -69,7 +66,7 @@ class CorrespondenceFigure:
         return mean
 
     def embed(self):
-        flat = self.masks.reshape(len(self.masks), -1)
+        flat = self.turned.reshape(len(self.turned), -1)
         seed = self.settings.seed
         embedding = TSNE(n_components=2, random_state=seed).fit(flat)
         self.points = np.asarray(embedding.transform(flat))         # the script lays the masks out a second time

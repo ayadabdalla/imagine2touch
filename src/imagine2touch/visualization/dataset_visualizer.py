@@ -9,6 +9,7 @@ from pathlib import Path
 
 from .style import Style
 from .touch_view import TouchView
+from imagine2touch.datasets import TactileImage
 
 PANELS = ("where", "rgb", "camera", "scan", "mask", "field")
 TITLES = {"where": "Where", "rgb": "Colour image", "camera": "Depth, wrist camera", "mask": "Contact mask, camera",
@@ -38,6 +39,7 @@ class DatasetVisualizer:
         self.placed = [k for k in self.sessions if dataset.has_scan(k)]
         self.rng = np.random.default_rng(seed)
         self.signal_limit = float(np.percentile(np.abs(dataset.signal[self.rows[self.calm]]), 98))
+        self.grey_limit = float(np.nanpercentile(TactileImage.grey(dataset.signal[self.rows[self.calm]]), 98))
 
     # ------------------------------------------------------------------ choosing touches worth looking at
     def clear_touches(self, per_shape=1, sessions=None):
@@ -140,7 +142,7 @@ class DatasetVisualizer:
             scan = np.where(view.scan_gap >= view.reach, 2 * view.reach, np.clip(view.scan_gap, 0, None))    # nothing in reach: drawn as far
             axes["scan"].imshow(scan, **depth)
         axes["mask"].imshow(view.mask, cmap=Style.MASKS, vmin=0, vmax=1, interpolation="nearest")
-        axes["field"].imshow(view.field[2], cmap=Style.SIGNAL, vmin=-self.signal_limit, vmax=self.signal_limit)
+        axes["field"].imshow(view.grey, cmap=Style.SIGNAL, vmin=0, vmax=self.grey_limit)
         for name, ax in axes.items():
             if name != "where":
                 Style.frame(ax)
@@ -168,10 +170,9 @@ class DatasetVisualizer:
                            cax=fig.add_axes([first.x0, low, last.x1 - first.x0, 0.07 / H]), orientation="horizontal")
         bar.set_ticks([0, 3.5, 7], labels=["nearest", "3.5 mm", "7 mm"] if "scan" not in axes else ["touching", "3.5 mm in front", "7 mm"])
         first = last = axes["field"].get_position()
-        bar_2 = fig.colorbar(plt.cm.ScalarMappable(plt.Normalize(-self.signal_limit, self.signal_limit), Style.SIGNAL),
+        bar_2 = fig.colorbar(plt.cm.ScalarMappable(plt.Normalize(0, self.grey_limit), Style.SIGNAL),
                              cax=fig.add_axes([first.x0, low, last.x1 - first.x0, 0.07 / H]), orientation="horizontal")
-        bar_2.set_ticks([-self.signal_limit, 0, self.signal_limit],
-                        labels=[f"−{self.signal_limit:.0f}", "no change", f"+{self.signal_limit:.0f}"])
+        bar_2.set_ticks([0, self.grey_limit], labels=["no change", f"{self.grey_limit:.0f}"])
         for b in (bar, bar_2):
             b.outline.set_visible(False)
             b.ax.tick_params(length=2, labelsize=7.5)

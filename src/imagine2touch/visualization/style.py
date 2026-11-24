@@ -19,7 +19,7 @@ class Style:
 
     DEPTH = ListedColormap(["#0d366b", "#104281", "#184f95", "#1c5cab", "#256abf", "#2a78d6", "#3987e5", "#5598e7",
                             "#6da7ec", "#86b6ef", "#9ec5f4", "#b7d3f6", "#cde2fb"], "depth")
-    SIGNAL = LinearSegmentedColormap.from_list("signal", ["#184f95", "#2a78d6", "#9ec5f4", "#f0efec", "#f2a3a2", "#e34948", "#a32a2a"])
+    SIGNAL = LinearSegmentedColormap.from_list("signal", ["#f0efec", "#f2a3a2", "#e34948", "#a32a2a"])      # no change to a large one
     MASKS = ListedColormap([SURFACE, MASK], "mask")
     DEPTH = DEPTH.with_extremes(bad=MISSING, over=SURFACE)      # no reading; nothing within reach
     SIGNAL = SIGNAL.with_extremes(bad=SURFACE)                  # the corners of a tactile image

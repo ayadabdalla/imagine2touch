@@ -21,12 +21,11 @@ class TouchModel:
     """
 
     def __init__(self, architecture="mlp", scaling="standard", epochs=300, lr=5e-4, batch_size=128,
-                 image_weight=1.0, patience=30, seed=0, device="cpu", binary_images=False, absolute=False):
+                 image_weight=1.0, patience=30, seed=0, device="cpu", binary_images=False):
         from imagine2touch.method.models import ARCHITECTURES
         self.architecture, self.scaling, self.binary_images = architecture, scaling, binary_images
         self.epochs, self.lr, self.batch_size = epochs, lr, batch_size
         self.image_weight, self.patience, self.seed, self.device = image_weight, patience, seed, device
-        self.absolute = absolute            # train on the size of every value, as the thesis's code did
         self.scaler = SIGNAL_SCALERS[scaling]()
         torch.manual_seed(seed)
         self.network = ARCHITECTURES[architecture]().to(device)
@@ -45,8 +44,8 @@ class TouchModel:
         return loss
 
     def target(self, signals):
-        """The signals as the network is trained on them: their sizes if `absolute`."""
-        return np.abs(signals) if self.absolute else np.asarray(signals, float)
+        """The signals as the network is trained on them: the size of every value, as in the thesis's code."""
+        return np.abs(np.asarray(signals, float))
 
     def fit(self, images, signals, validation=None):
         signals = self.target(signals)
@@ -90,14 +89,13 @@ class TouchModel:
 
     # ------------------------------------------------------------------ saving
     def save(self, path):
-        torch.save(dict(network=self.network.state_dict(), scaler=vars(self.scaler), absolute=self.absolute,
+        torch.save(dict(network=self.network.state_dict(), scaler=vars(self.scaler),
                         architecture=self.architecture, scaling=self.scaling, binary_images=self.binary_images), path)
 
     @classmethod
     def load(cls, path, device="cpu"):
         state = torch.load(path, map_location=device, weights_only=False)
-        model = cls(state["architecture"], state["scaling"], device=device, binary_images=state["binary_images"],
-                    absolute=state.get("absolute", False))
+        model = cls(state["architecture"], state["scaling"], device=device, binary_images=state["binary_images"])
         model.network.load_state_dict(state["network"])
         vars(model.scaler).update(state["scaler"])
         return model

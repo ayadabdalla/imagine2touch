@@ -17,7 +17,7 @@ TABLES = [   # title, table of ResultsAnalyzer, what it shows
      "Paper: T 0.91, circle 0.90, angle 0.90, triangle 0.95, cross 0.94, all 0.92."),
     ("The clusters of the t-SNE figure (paper: Fig. 2)", "clusters",
      "Per cluster of masks: touches, share of the mask that is filled, where the mask lies (0 to 1 along rows and "
-     "columns), and the mean field along the direction of touch at each magnetometer."),
+     "columns), and the mean size of the change of the field along the direction of touch at each magnetometer."),
     ("How much of the touch signal the mask explains", "correspondence",
      "Share of the differences between touch signals that the cluster of the mask explains, and the same when "
      "masks and signals are paired at random."),

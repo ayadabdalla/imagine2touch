@@ -45,8 +45,7 @@ class Benchmark:
         m = self.config.model
         device = ("cuda" if torch.cuda.is_available() else "cpu") if m.device == "auto" else m.device
         return TouchModel(architecture or m.architecture, m.scaling, m.epochs, m.lr, m.batch_size, m.image_weight,
-                          m.patience, seed, device, binary_images=kind is not None and IMAGE_INPUTS[kind].binary,
-                          absolute=getattr(m, "absolute", False))
+                          m.patience, seed, device, binary_images=kind is not None and IMAGE_INPUTS[kind].binary)
 
     def trained_model(self, seed, kind, cleaned=True):
         """
