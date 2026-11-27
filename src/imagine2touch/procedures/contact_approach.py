@@ -19,6 +19,7 @@ import numpy as np
 
 from imagine2touch.datasets.recordings import ApproachOutcome
 from imagine2touch.geometry import Pose
+from imagine2touch.interfaces import Robot, TouchSensor
 
 
 @dataclass
@@ -55,7 +56,7 @@ class ContactApproach:
     `sleep` is the function that waits between steps; the tests pass one that does not wait.
     """
 
-    def __init__(self, robot, sensor, settings=None, safety=None, sleep=time.sleep):
+    def __init__(self, robot: Robot, sensor: TouchSensor, settings=None, safety=None, sleep=time.sleep):
         self.robot, self.sensor, self.safety, self.sleep = robot, sensor, safety, sleep
         self.settings = settings or ApproachSettings()
 

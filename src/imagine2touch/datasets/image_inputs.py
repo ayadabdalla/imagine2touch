@@ -18,6 +18,7 @@ class ImageInput(ABC):
     """
 
     name: str
+    described: str              # the input in a few plain words, for tables
     binary = False
     rendered = False
 
@@ -30,6 +31,7 @@ class CameraMask(ImageInput):
     """The contact mask of the wrist camera's depth image: what the paper's code trains the model on (the paper: a processed depth image)."""
 
     name, binary = "mask", True
+    described = "wrist camera, contact mask"
 
     def build(self, dataset, rows, session=None):
         return dataset.mask[np.asarray(rows)].astype(np.float32)
@@ -39,6 +41,7 @@ class CameraDepth(ImageInput):
     """The wrist camera's depth image with missing pixels filled, relative to its nearest pixel."""
 
     name = "depth"
+    described = "wrist camera, depth image"
 
     def build(self, dataset, rows, session=None):
         depth = dataset.depth_processed[np.asarray(rows)].astype(np.float32)
@@ -50,6 +53,7 @@ class ScanDepth(ImageInput):
     """The depth image that an object's scan shows at the pose where the sensor stopped."""
 
     name, rendered = "scan", True
+    described = "object's scan, depth image"
 
     def build(self, dataset, rows, session=None):
         return dataset.scan_depths(rows, session) / dataset.grid.empty
@@ -62,6 +66,7 @@ class ScanMask(ImageInput):
     """
 
     name, binary, rendered = "scan_mask", True, True
+    described = "object's scan, contact mask"
 
     def __init__(self, tolerance=2):
         self.contact_mask = ContactMask(tolerance)

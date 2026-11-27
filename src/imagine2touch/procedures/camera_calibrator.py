@@ -3,28 +3,28 @@ Finding where the wrist camera sits, and where the table is.
 
 A board of printed tags lies on the table.  The robot holds the camera over it from many directions;
 in every view the camera reports where it sees the board and the robot where it holds the sensor.
-`CameraCalibration` turns those pairs into the two calibrations every other procedure needs.
+`geometry/CameraCalibration` turns those pairs into the two calibrations every other procedure needs.
 """
 
 import time
 
 import numpy as np
 
-from imagine2touch.datasets.calibration import CameraCalibration
-from imagine2touch.geometry import Pose, Viewpoints
+from imagine2touch.geometry import CameraCalibration, Pose, Viewpoints
+from imagine2touch.interfaces import CalibrationBoard, DepthCamera, Robot
 
 
 class CameraCalibrator:
     """
         calibration = CameraCalibrator(robot, camera, board, expected_camera_in_sensor).calibrate(board_centre)
 
-    `board` is a CalibrationBoard (datasets/calibration).  `expected_camera_in_sensor` (4 x 4) is a rough
+    `board` is a CalibrationBoard (interfaces.py).  `expected_camera_in_sensor` (4 x 4) is a rough
     guess of the camera's place on the sensor, from a ruler or a drawing: it only serves to point the
     camera at the board.
     `board_centre` is roughly where the middle of the board is, in the frame of the robot's base [m].
     """
 
-    def __init__(self, robot, camera, board, expected_camera_in_sensor, distance=0.15,
+    def __init__(self, robot: Robot, camera: DepthCamera, board: CalibrationBoard, expected_camera_in_sensor, distance=0.15,
                  tilts=(0.0, np.radians(20), np.radians(40)), per_tilt=6, settle=0.5, sleep=time.sleep):
         self.robot, self.camera, self.board, self.sleep, self.settle = robot, camera, board, sleep, settle
         self.expected = Pose.from_matrix(expected_camera_in_sensor)

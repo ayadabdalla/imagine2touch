@@ -4,7 +4,7 @@ import numpy as np
 from scipy.optimize import least_squares
 from scipy.spatial.transform import Rotation
 
-from imagine2touch.geometry import Pose
+from .pose import Pose
 
 
 class CameraCalibration:

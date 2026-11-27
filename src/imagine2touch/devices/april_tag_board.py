@@ -8,7 +8,7 @@ used the board detector of robot_io.  Checked on rendered pictures of the board,
 import numpy as np
 
 from imagine2touch.geometry import Pose
-from .calibration_board import CalibrationBoard
+from imagine2touch.interfaces import CalibrationBoard
 
 
 class AprilTagBoard(CalibrationBoard):

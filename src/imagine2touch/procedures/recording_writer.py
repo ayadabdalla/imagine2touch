@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from imagine2touch.reskin_reading import ReSkinReading
+from imagine2touch.datasets import ReSkinReading
 from imagine2touch.datasets.recordings import PointCloudFile, Recording
 from imagine2touch.method.preprocessing import ContactMask, DepthFill
 

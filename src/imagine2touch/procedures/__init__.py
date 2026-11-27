@@ -1,6 +1,6 @@
 """
 What the robot does to prepare for touching objects, and when it touches them.  The hardware is reached
-through the three interfaces of `interfaces.py` only, so the same code runs on the real devices
+through the interfaces of `interfaces.py` only, so the same code runs on the real devices
 (`devices/`) and on the simulated ones (`simulation/`).
 
   CameraCalibrator   finds where the wrist camera sits and where the table is, from views of a board of tags

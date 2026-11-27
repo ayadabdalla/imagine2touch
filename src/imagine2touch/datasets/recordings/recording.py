@@ -29,9 +29,10 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
+from imagine2touch.datasets.tactile_image import ReSkinReading
 from imagine2touch.geometry.object_scan import ObjectScan
+from .approach_outcome import ApproachOutcome
 from .point_cloud_file import PointCloudFile
-from imagine2touch.reskin_reading import ReSkinReading
 
 
 class Recording:
@@ -89,7 +90,16 @@ class Recording:
         """Whether the recording stored where its scan stood under the robot; the sessions of March 2023 did not."""
         return self.calibration_path("world_from_base").exists()
 
-    placement = None        # set by the reducer for recordings without a stored one (datasets/calibration/scan_placement.py)
+    placement = None        # set by the reducer for recordings without a stored one (TablePoseRecovery)
+
+    def raw_scan(self):
+        """The points (n, 3) of the scan as it was stored, in the frame of the table [m]."""
+        return PointCloudFile.read(self.scan_path)
+
+    def felt(self):
+        """The touches at which the sensor felt the surface, as indices; every touch if the session did not record how its approaches ended."""
+        known = (self.outcome != ApproachOutcome.UNKNOWN).any()
+        return np.flatnonzero(self.outcome == ApproachOutcome.SENSOR) if known else np.arange(self.n)
 
     @property
     def has_scan(self):
@@ -150,7 +160,7 @@ class Recording:
         if not self.has_scan:
             return ObjectScan(np.zeros((0, 3)))
         base_from_world = np.linalg.inv(self.world_from_base)
-        world = PointCloudFile.read(self.scan_path)
+        world = self.raw_scan()
         return ObjectScan.from_raw_points(1000 * (world @ base_from_world[:3, :3].T + base_from_world[:3, 3]))
 
     def images(self, i):

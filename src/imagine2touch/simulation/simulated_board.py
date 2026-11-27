@@ -4,7 +4,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from imagine2touch.geometry import Pose
-from imagine2touch.datasets.calibration import CalibrationBoard
+from imagine2touch.interfaces import CalibrationBoard
 
 
 class SimulatedBoard(CalibrationBoard):

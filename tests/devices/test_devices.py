@@ -10,7 +10,7 @@ from imagine2touch.devices.franka_robot import FrankaRobot
 from imagine2touch.devices.reskin_sensor import ReSkinSensor
 from imagine2touch.geometry import Pose
 from imagine2touch.interfaces import Robot, TouchSensor
-from imagine2touch.reskin_reading import ReSkinReading
+from imagine2touch.datasets import ReSkinReading
 
 
 class ArmClient:

@@ -1,7 +1,7 @@
-"""What the procedures need from the hardware.  Real devices and simulated ones implement the same three classes."""
+"""What the procedures need from the hardware.  `devices/` and `simulation/` implement these classes."""
 
 from abc import ABC, abstractmethod
-from typing import Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 
@@ -33,7 +33,10 @@ class Robot(ABC):
 class TouchSensor(ABC):
     @abstractmethod
     def read(self, samples: int = 1) -> np.ndarray:
-        """The mean of the last `samples` readings: 15 field values, three per magnetometer."""
+        """
+        The mean of the last `samples` readings: 15 field values, three for each of the five
+        magnetometers, in the order centre, top, right, bottom, left.
+        """
 
 
 class DepthCamera(ABC):
@@ -43,3 +46,18 @@ class DepthCamera(ABC):
     def capture(self) -> Tuple[np.ndarray, np.ndarray]:
         """A colour image (h, w, 3) and a depth image (h, w) in metres, aligned with each other."""
 
+
+class CalibrationBoard(ABC):
+    """
+    A flat board lying on the table, which the wrist camera is calibrated against.  Its frame becomes
+    the world frame: the board's third axis points out of its printed side, up from the table.
+    devices/AprilTagBoard is the printed one; simulation/SimulatedBoard stands in for it where the
+    simulated camera draws no picture.
+    """
+
+    @abstractmethod
+    def pose_in(self, colour: np.ndarray, intrinsics: np.ndarray) -> Optional[Pose]:
+        """
+        Takes a colour image (h, w, 3) and the 3 x 3 matrix of the camera that took it.  Returns the pose
+        of the board in the frame of that camera [m], or None if the board is not seen well enough.
+        """

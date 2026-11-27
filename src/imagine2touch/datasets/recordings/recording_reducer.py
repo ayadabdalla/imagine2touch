@@ -11,22 +11,25 @@ including those recorded after the paper's; --sessions keeps the ones it names.
 
 The recordings store where the sensor was sent, not where it stopped.  The pose it stopped at is
 computed from the joint angles, which were recorded in contact, with Franka's kinematics and the
-fitted position of the sensor on the flange (ToolCalibration), fitted once for the sessions of
-March 2023 and once for those with an ambient reading before every touch.  Where a session did not store where its scan
-stood under the robot, the calibration of its recording code is used (ScanPlacement).  Recordings that do store the reached pose, those
-of procedures/RecordingWriter, are taken as they are.
+position of the sensor on the flange.  That position is fitted (SensorMountRecovery), once for the
+sessions of March 2023 and once for those with an ambient reading before every touch.  Where a
+session did not store where its scan stood under the robot, the calibration of its recording code
+is used (TablePoseRecovery).  Recordings that do store the reached pose and the table's
+calibration, those of procedures/RecordingWriter, are taken as they are.
 """
+
 
 import argparse
 from pathlib import Path
 
 import numpy as np
 
+from imagine2touch.datasets.visuo_tactile_dataset import VisuoTactileDataset
 from imagine2touch.geometry import FrankaKinematics, Pose
 from imagine2touch.paths import DATA_DIR
 from .recording_reader import RecordingReader
-from imagine2touch.datasets.calibration import ScanPlacement, ToolCalibration
-from imagine2touch.datasets.visuo_tactile_dataset import VisuoTactileDataset
+from .sensor_mount_recovery import SensorMountRecovery
+from .table_pose_recovery import TablePoseRecovery
 
 COLUMNS = ("object", "shape", "experiment", "outcome", "signal", "reading", "ambient", "wrench", "joints", "depth",
            "depth_processed", "mask", "rgb", "camera_to_sensor", "pose_R", "pose_t", "commanded_R", "commanded_t")
@@ -39,11 +42,11 @@ class RecordingReducer:
         if not self.recordings:
             raise FileNotFoundError(f"{source}: no complete recordings")
         unplaced = [r for r in self.recordings if not r.has_placement and r.scan_path.exists()]
-        for recording in unplaced:                              # the sessions of March 2023: the calibration of their recording code
-            recording.placement = ScanPlacement.stored()
+        for recording in unplaced:                              # the sessions of March 2023
+            recording.placement = TablePoseRecovery.stored()
         fitted = [r for r in self.recordings if r.reached is None]
-        self.tool = ToolCalibration.fit([r for r in fitted if r.ambient_per_touch])            # an ambient reading before every touch
-        self.early_tool = ToolCalibration.fit([r for r in fitted if not r.ambient_per_touch])   # March 2023
+        self.tool = SensorMountRecovery.fit([r for r in fitted if r.ambient_per_touch])            # an ambient reading before every touch
+        self.early_tool = SensorMountRecovery.fit([r for r in fitted if not r.ambient_per_touch])   # March 2023
         self.objects = sorted({r.object for r in self.recordings})
         self.shapes = sorted({r.shape for r in self.recordings})
 

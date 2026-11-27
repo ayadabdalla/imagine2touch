@@ -7,40 +7,104 @@ The results of a benchmark run: tables to <results>/summary.md and the paper's F
 import argparse
 from pathlib import Path
 
+import pandas as pd
+
 from imagine2touch.experiments import Benchmark, Config, ResultsAnalyzer
 from imagine2touch.paths import RESULTS_DIR
 from imagine2touch.visualization import CorrespondenceFigure
 
-TABLES = [   # title, table of ResultsAnalyzer, what it shows
-    ("Shape classification (paper: Table I)", "shape_classification",
-     "Share of test presses named correctly, per stamp: the paper's 1,280 presses, split, network and training.  "
-     "Paper: T 0.91, circle 0.90, angle 0.90, triangle 0.95, cross 0.94, all 0.92."),
-    ("The clusters of the t-SNE figure (paper: Fig. 2)", "clusters",
-     "Per cluster of masks: touches, share of the mask that is filled, where the mask lies (0 to 1 along rows and "
-     "columns), and the mean size of the change of the field along the direction of touch at each magnetometer."),
-    ("How much of the touch signal the mask explains", "correspondence",
-     "Share of the differences between touch signals that the cluster of the mask explains, and the same when "
-     "masks and signals are paired at random."),
-    ("The touch model on the paper's objects (paper: Sec. II and Fig. 1; thesis: Fig. 23)", "touch_prediction",
-     "Trained on flower and hexagon; loss on those, on the cutter (validation) and on parallelogram, square and "
-     "star (recognition): the mean squared error of the scaled signal, as the thesis plots it.  `_average` is the "
-     "loss of always predicting the mean training signal.  Thesis Fig. 23: 0.06 in training, 0.10 on the three "
-     "recognition objects."),
-    ("Object recognition (paper: Table II), repeated by a simulated robot", "object_recognition",
-     "A simulated robot touches the scan of parallelogram, square or star ten times, following the paper's "
-     "procedure.  One such round of ten touches is a trial; each object gets twenty trials with each seed's model.  The model is trained on flower and hexagon only, on depth images "
-     "of their scans.  Where the sensor meets the object, both methods are scored from the real touch recorded "
-     "nearest to it: its signal and its pose.  Share of single touches that vote for the touched object, per "
-     "object and on average, and share of trials that name it; means over the seeds.  The paper measured this once "
-     "on the robot.  The votes of those runs are kept (original repository, reskin/task/results): for parallelogram, "
-     "square and star 40%, 70% and 40% with the model (50% on average) and 30%, 20% and 20% with proprioception "
-     "(23%).  The touches themselves were not kept, so those runs cannot be scored again."),
-    ("Object recognition, tools (paper: Table II)", ("object_recognition", "tool_recognition"),
-     "The same test with the paper's second set of objects, the tools: a box cutter and a hanger, and the "
-     "same model.  The robot touches the cutter; the hanger was only scanned, so it cannot be the touched object.  "
-     "Chance is 50%.  On the paper's robot (one run per tool): the model voted for the cutter in 60% of the touches and "
-     "for the hanger in 80% (Table II: 70%), proprioception in 100% and 60% (Table II: 80%)."),
+TABLES = [   # title, table of ResultsAnalyzer, which value of a column is the best (highest, lowest or none), what it shows
+    ("Shape classification (paper: Table I)", "shape_classification_measures", None,
+     "Share of test presses named correctly, per stamp.  At 90% certainty a stamp counts as named only if the "
+     "classifier gives it at least 90%, and each of the five yes-or-no answers of a press is scored; this reads "
+     "higher, since four of the five answers are an easy no."),
+    ("The clusters of the t-SNE figure (paper: Fig. 2)", "clusters", None,
+     "The masks are sorted into clusters of similar masks.  Per cluster: where the contact lies on the sensor, and "
+     "the strength of the signal at each magnetometer against what is usual there (+20%: a fifth stronger than over "
+     "all touches).  A contact to one side should raise the magnetometer on that side.\n\n"
+     "- Green text: above usual.\n"
+     "- Yellow background: the largest value of the row.\n"
+     "- Blue background: the magnetometer on the side where the contact lies, from top to bottom, is above usual.\n"
+     "- Purple background: the same from left to right.\n"
+     "- Blue or purple with a yellow frame: it is also the largest of the row.\n"),
+    ("Does the mask help to guess the touch signal?", "correspondence", None,
+     "If you know the mask of a touch, can you guess what the sensor felt?  The signal of each touch is hidden and "
+     "guessed as the average signal of other touches.  The table says how much better that guess is than one made "
+     "without looking at the mask: 0% no better, 100% exact.  The rows differ in which touches are averaged:\n\n"
+     "- **Same cluster**: every touch in the same cluster of the table above, a few hundred loosely similar masks.\n"
+     "- **Ten most similar masks**: the ten touches of the same object whose masks are nearly the same picture.\n"
+     "- **At random**: touches picked without looking at the mask, to show what no help looks like.\n\n"
+     "The last two rows ask something else: is the signal stronger on the side of the sensor where the contact lies?"),
+    ("The touch model on the paper's objects (paper: Sec. II and Fig. 1)", "touch_prediction", None,
+     "Mean squared error of the scaled signal, per kind of image the model was trained on (rows) and set of "
+     "objects (columns).  The mean signal has the lower error on new objects, but the error does not see where on "
+     "the sensor the signal lies, and the mean cannot tell objects apart; the next tables measure that."),
+    ("Object recognition (paper: Table II), repeated by a simulated robot", "object_recognition", "highest",
+     "A simulated robot touches parallelogram, square or star ten times and chooses among the three; twenty trials "
+     "per object and seed.  The model is trained on flower and hexagon, on depth images of their scans.  Where the "
+     "sensor meets the object, both methods are scored from the real touch recorded nearest.  The paper's "
+     "robot made one run of ten touches per object.  The number of trials is in brackets.  "
+     "The best value of a column has a yellow background, ties included; the paper's rows, under the dashed line, are "
+     "not compared."),
+    ("Object recognition, tools (paper: Table II)", ("object_recognition", "tool_recognition"), "highest",
+     "The same with the paper's tools: the robot touches the cutter and chooses between cutter and hanger.  The "
+     "paper's robot made one run; its Table II averages this run with one on the hanger."),
 ]
+
+NAMED = "named after all touches"
+PAPER = {   # the paper's own numbers, added under a table's rows: title of the table -> (trials behind NAMED, row -> column -> value)
+    "Shape classification (paper: Table I)": (None, {
+        "paper, Table I": dict(T=0.91, circle=0.90, angle=0.90, triangle=0.95, cross=0.94, all=0.92)}),
+    # the votes of the paper's runs, kept in the original repository (reskin/task/results)
+    "Object recognition (paper: Table II), repeated by a simulated robot": (3, {
+        "paper's robot, touch model": {"parallelogram": 0.4, "square": 0.7, "star": 0.4, "mean per touch": 0.5, NAMED: 1.0},
+        "paper's robot, proprioception": {"parallelogram": 0.3, "square": 0.2, "star": 0.2, "mean per touch": 0.233, NAMED: 0.0}}),
+    "Object recognition, tools (paper: Table II)": (1, {
+        "paper's robot, touch model": {"cutter": 0.6, NAMED: 1.0},
+        "paper's robot, proprioception": {"cutter": 1.0, NAMED: 1.0}}),
+}
+
+
+def as_text(table, best=None, skip=("chance",)):
+    """
+    The table with its numbers as text.  With `best` ("highest" or "lowest") the best value of every
+    column gets a coloured background; equal values share it.  The trials behind NAMED follow it in brackets.
+    """
+    values = table.round(3)
+    text = values.map(lambda value: "" if pd.isna(value) else f"{value:g}")
+    for column in values.columns.difference(skip) if best else ():
+        winner = values[column].max() if best == "highest" else values[column].min()
+        text.loc[values[column] == winner, column] = f'<span style="{ResultsAnalyzer.LARGEST}">{winner:g}</span>'
+    if NAMED in text and "trials" in table.attrs:
+        text[NAMED] += f" ({table.attrs['trials']})"
+    return text
+
+
+def with_paper(text, trials, rows):
+    """
+    The table of text with the paper's rows under its own; `attrs["dashed"]` names the first of them,
+    above which a dashed line is drawn.  They take no part in the comparison above them.  A paper's
+    row is left out if the table lacks one of its columns.
+    """
+    rows = {label: values for label, values in rows.items() if set(values) <= set(text.columns)}
+    if rows:
+        text.attrs["dashed"] = next(iter(rows))
+    for label, values in rows.items():
+        text.loc[label] = {column: f"{values[column]:g}" if column in values else text[column].iloc[0] if column == "chance" else "" for column in text.columns}
+        if NAMED in values:
+            text.loc[label, NAMED] += f" ({trials})"
+    return text
+
+
+def as_html(text):
+    """The table of text as an HTML table, which Markdown shows as it is, with a dashed line above the row `attrs["dashed"]`."""
+    cell = lambda tag, value, style: f'<{tag} style="{style}">{value}</{tag}>'
+    rows = ["<tr>" + cell("th", text.index.name or "", "text-align:left") + "".join(cell("th", column, "text-align:right") for column in text.columns) + "</tr>"]
+    for label, values in text.iterrows():
+        line = "border-top:2px dashed #888;" if label == text.attrs.get("dashed") else ""
+        rows.append("<tr>" + cell("td", label, line + "text-align:left") + "".join(cell("td", value, line + "text-align:right") for value in values) + "</tr>")
+    return "<table>\n" + "\n".join(rows) + "\n</table>"
+
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -48,15 +112,20 @@ if __name__ == "__main__":
     args = ap.parse_args()
     results = Path(args.results)
     analyzer, lines = ResultsAnalyzer(results), ["# Imagine2touch: results\n"]
-    for title, name, caption in TABLES:
+    for title, name, best, caption in TABLES:
         name, *arguments = (name,) if isinstance(name, str) else name
         try:
             table = getattr(analyzer, name)(*arguments)
         except FileNotFoundError as missing:
             print(f"skipped '{title}': {missing}")
             continue
-        table = table.to_frame("value") if table.ndim == 1 else table
-        lines += [f"## {title}\n", caption + "\n", table.reset_index().round(3).to_markdown(index=False) + "\n"]
+        caption = "\n\n".join(text.strip() for text in (caption, table.attrs.get("note")) if text)
+        if table.ndim == 1:
+            table = table.rename_axis("measure").to_frame("value")
+        elif best or title in PAPER:
+            table = with_paper(as_text(table, best), *PAPER.get(title, (None, {})))
+        shown = as_html(table) if table.attrs.get("dashed") else table.reset_index().round(3).to_markdown(index=False)
+        lines += [f"## {title}\n", caption + "\n", shown + "\n"]
     summary = "\n".join(lines)
     print(summary)
     (results / "summary.md").write_text(summary)

@@ -2,14 +2,13 @@
 Imagine2touch: predicting the touch signal of a ReSkin sensor from depth images of the surface.
 
   datasets/         the two datasets of the paper; how they are made from the robot's recordings
-  geometry/         poses, the robot's kinematics, an object's scan and the depth image it shows
-  method/           what the paper proposes: preprocessing, the models, recognition by touch
+  geometry/         poses, the robot's kinematics, the camera's calibration, an object's scan and the depth image it shows
+  method/           the paper's computation, with no robot in it: preprocessing, the models, the rule that names an object
 
   experiments/      the method on the recorded data: every experiment of the paper
-  procedures/       the method while touching: a robot collects touches and recognises objects
-  interfaces.py     Robot, TouchSensor, DepthCamera: what the procedures need, and what the next two provide
-  reskin_reading.py the layout of a ReSkin reading, shared by the sensor's adapter and the recordings
-  devices/          the real Franka arm, ReSkin and RealSense camera for the procedures
+  procedures/       what the robot does, using the method: calibrate, scan, touch, recognise
+  interfaces.py     Robot, TouchSensor, DepthCamera, CalibrationBoard: what the procedures need, and what the next two provide
+  devices/          the real Franka arm, ReSkin, RealSense camera and calibration board for the procedures
   simulation/       a simulated robot, sensor and camera for the procedures, on the real scans and recorded signals
   visualization/    the figures
 

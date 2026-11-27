@@ -5,7 +5,9 @@ The recordings as the robot wrote them, and their conversion into the two datase
   RecordingReader            finds the recordings in a folder
   PointCloudFile             reads and writes the files of the scans
   ApproachOutcome            how an approach of the sensor ended, as the robot's code is written to a recording
-  RecordingReducer           recordings of touches -> imagine2touch.npz, with the help of `calibration/`
+  RecordingReducer           recordings of touches -> imagine2touch.npz
+  SensorMountRecovery        where the sensor sat on the flange, for recordings that did not save where the sensor stopped
+  TablePoseRecovery          where the table stood relative to the robot, for recordings that did not save it
   StampRecordingConverter    recordings of stamp presses -> shape_classification.npz
 
     python -m imagine2touch.datasets.recordings.recording_reducer --source PATH/TO/Imagine2touch_data

@@ -14,6 +14,7 @@ import time
 import numpy as np
 
 from imagine2touch.geometry import Pose
+from imagine2touch.interfaces import DepthCamera, Robot, TouchSensor
 from .contact_approach import ContactApproach
 from .safety_checker import SafetyChecker
 
@@ -27,7 +28,7 @@ class TouchCollector:
     `sensor_x` (base frame) as possible: backwards, as the paper's robot held it.
     """
 
-    def __init__(self, robot, sensor, camera, cloud, normals, world_from_base, camera_in_sensor,
+    def __init__(self, robot: Robot, sensor: TouchSensor, camera: DepthCamera, cloud, normals, world_from_base, camera_in_sensor,
                  look=0.04, retreat=0.02, half_side=0.0085, candidates=2000, sensor_x=(-1.0, 0.0, 0.0),
                  approach_settings=None, safety_settings=None, rng=None, sleep=time.sleep):
         self.robot, self.sensor, self.camera = robot, sensor, camera

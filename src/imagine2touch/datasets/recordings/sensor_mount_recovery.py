@@ -1,13 +1,12 @@
-"""Where the touch sensor sits relative to the robot's flange."""
+"""Where the touch sensor sat on the robot's flange, recovered for recordings that did not save where the sensor stopped."""
 
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from imagine2touch.datasets.recordings.approach_outcome import ApproachOutcome
 from imagine2touch.geometry import FrankaKinematics, Pose
 
 
-class ToolCalibration:
+class SensorMountRecovery:
     """
     The recordings hold the robot's joint angles at every touch.  From those we can compute where the
     flange (the end of the arm) was, but the sensor sits further out, on a hand and a printed finger.
@@ -26,9 +25,7 @@ class ToolCalibration:
         """Takes recordings made with the same mount.  Returns the pose of the sensor in the frame of the flange [mm]."""
         rotations, positions = [], []
         for recording in recordings:
-            outcomes_known = (recording.outcome != ApproachOutcome.UNKNOWN).any()
-            reached = np.flatnonzero(recording.outcome == ApproachOutcome.SENSOR) if outcomes_known else range(recording.n)
-            for i in reached:
+            for i in recording.felt():
                 flange = FrankaKinematics.flange_pose(recording.joints[i])
                 commanded_rotation = Rotation.from_quat(recording.rotation[i]).as_matrix()
                 commanded_position = 1000 * recording.target[i]                      # the recordings are in metres

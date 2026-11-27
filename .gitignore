@@ -150,3 +150,6 @@ data/*
 results/
 /scans/
 /calibration/
+
+# editor workspace files
+*.code-workspace

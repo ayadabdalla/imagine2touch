@@ -21,6 +21,7 @@ class ShapeClassifier:
     LAYERS = {"deep": (40, 100, 100), "wide": (500, 10)}
 
     def __init__(self, architecture="wide", classes=5, epochs=1000, lr=1e-3, batch_size=64, seed=0, standardise=False):
+        self.architecture, self.classes = architecture, classes
         self.epochs, self.lr, self.batch_size, self.seed, self.standardise = epochs, lr, batch_size, seed, standardise
         torch.manual_seed(seed)
         sizes, layers = (15, *self.LAYERS[architecture]), []
@@ -52,3 +53,15 @@ class ShapeClassifier:
 
     def predict(self, signal):
         return self.probabilities(signal).argmax(1)
+
+    def save(self, path):
+        torch.save(dict(network=self.network.state_dict(), architecture=self.architecture, classes=self.classes,
+                        standardise=self.standardise, mean=self.mean, std=self.std), path)
+
+    @classmethod
+    def load(cls, path):
+        state = torch.load(path, map_location="cpu", weights_only=False)
+        model = cls(state["architecture"], state["classes"], standardise=state["standardise"])
+        model.network.load_state_dict(state["network"])
+        model.mean, model.std = state["mean"], state["std"]
+        return model

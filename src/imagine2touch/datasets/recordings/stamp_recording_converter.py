@@ -25,8 +25,8 @@ from pathlib import Path
 import numpy as np
 
 from imagine2touch.paths import DATA_DIR
-from imagine2touch.reskin_reading import ReSkinReading
 from imagine2touch.datasets.shape_classification_dataset import ShapeClassificationDataset
+from imagine2touch.datasets.tactile_image import ReSkinReading
 
 FOLDERS = {"T": "T", "Cylinder": "circle", "V": "angle", "Mothalath": "triangle", "Salib": "cross"}
 

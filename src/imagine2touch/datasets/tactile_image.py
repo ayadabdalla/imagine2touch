@@ -1,6 +1,34 @@
-"""A touch signal as a picture."""
+"""A touch reading as the recordings store it, and the touch signal in it as a picture."""
 
 import numpy as np
+
+
+class ReSkinReading:
+    """
+    The recordings keep every reading as the ReSkin's driver delivered it: (time, delay, values,
+    sensor id) with 20 values, for each of the five magnetometers its temperature and three field
+    components.  The touch signal is made of the 15 field values, in the order the sensor sends its
+    magnetometers: centre, top, right, bottom, left (see TactileImage).
+    """
+
+    TEMPERATURES = (0, 4, 8, 12, 16)
+
+    @classmethod
+    def field(cls, reading):
+        """The 15 field values of a reading."""
+        values = np.asarray(np.asarray(reading, object).reshape(-1)[2], float)
+        return np.delete(values, cls.TEMPERATURES)
+
+    @classmethod
+    def mean_field(cls, readings):
+        """The mean field of several readings."""
+        return np.mean([cls.field(reading) for reading in readings], axis=0)
+
+    @classmethod
+    def from_field(cls, field, time=0.0, sensor=1):
+        """A reading in the stored layout that holds `field`, with temperatures of zero."""
+        values = np.insert(np.asarray(field, float), [0, 3, 6, 9, 12], 0.0)
+        return [time, 0.0, values.tolist(), sensor]
 
 
 class TactileImage:
@@ -14,7 +42,8 @@ class TactileImage:
     the sensor's own view of itself; the wrist camera's images of the same touch are turned against it.
     """
 
-    PIXELS = ((1, 1), (0, 1), (1, 2), (2, 1), (1, 0))      # centre, top, right, bottom, left
+    MAGNETOMETERS = ("centre", "top", "right", "bottom", "left")      # in the order the sensor sends them
+    PIXELS = ((1, 1), (0, 1), (1, 2), (2, 1), (1, 0))      # where each is drawn, in that order
     CORNERS = ((0, 0), (0, 2), (2, 0), (2, 2))
     GREY = (0.2989, 0.5870, 0.1140)         # the weights of red, green and blue in a grey picture
 
@@ -38,6 +67,14 @@ class TactileImage:
         images = np.asarray(images)
         rows, columns = (-3, -2) if colour else (-2, -1)
         return np.swapaxes(np.flip(images, (rows, columns)), rows, columns)
+
+    @classmethod
+    def strength(cls, signal):
+        """
+        One value per magnetometer (n, 5), in the order of MAGNETOMETERS: the grey of `grey`, that is,
+        the sizes of the three components of the change of the field, weighted by GREY and summed.
+        """
+        return np.abs(np.asarray(signal, float).reshape(-1, 5, 3)) @ np.array(cls.GREY)
 
     @classmethod
     def grey(cls, signal):

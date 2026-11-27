@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from imagine2touch.datasets.calibration import AprilTagBoard
+from imagine2touch.devices.april_tag_board import AprilTagBoard
 from imagine2touch.geometry import Viewpoints
 
 

@@ -1,14 +1,12 @@
-"""Where an object's scan stood under the robot, for sessions that did not record it."""
+"""Where the table, and with it every scan, stood relative to the robot, recovered for recordings that did not save it."""
 
 import numpy as np
 from scipy.spatial import cKDTree
 
-from imagine2touch.datasets.recordings.point_cloud_file import PointCloudFile
 
-
-class ScanPlacement:
+class TablePoseRecovery:
     """
-    A scan is stored in the frame of the table.  The later sessions saved, with every recording, the
+    An object's scan is stored in the frame of the table.  The later sessions saved, with every recording, the
     calibration that maps it into the robot's frame.  The sessions of March 2023 did not: their
     recording code read it from a file of its own, `reskin/utils/socket_robot_transform.npy`, kept
     here as TABLE_IN_ROBOT_MARCH_2023 (from commit 1a93322b of the recording code, 29 March 2023).
@@ -36,7 +34,7 @@ class ScanPlacement:
 
     def shift_of(self, recording):
         """The shift [m] that puts the targets of one recording on its scan, and the distances left [m]."""
-        targets, cloud = recording.target, PointCloudFile.read(recording.scan_path)
+        targets, cloud = recording.target, recording.raw_scan()
         tree = cKDTree(cloud)
         probe = self.rng.choice(len(targets), min(self.PROBES, len(targets)), replace=False)
         candidates = targets[probe[0]] - cloud                  # every shift that puts one target on a scan point

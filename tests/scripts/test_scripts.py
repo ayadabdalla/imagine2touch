@@ -11,7 +11,8 @@ FILES = ["scripts/run_benchmark.py", "scripts/report_benchmark.py"]
 MODULES = ["imagine2touch.experiments.scripts.train_model", "imagine2touch.visualization.scripts.visualize_dataset",
            "imagine2touch.procedures.scripts.calibrate_camera", "imagine2touch.procedures.scripts.scan_object",
            "imagine2touch.procedures.scripts.collect_data", "imagine2touch.procedures.scripts.recognize_object",
-           "imagine2touch.datasets.recordings.recording_reducer", "imagine2touch.datasets.recordings.stamp_recording_converter"]
+           "imagine2touch.datasets.recordings.recording_reducer", "imagine2touch.datasets.recordings.stamp_recording_converter",
+           "imagine2touch.datasets.recordings.scan_converter"]
 
 
 @pytest.mark.parametrize("script", FILES + MODULES)

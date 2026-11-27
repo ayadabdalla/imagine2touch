@@ -12,6 +12,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from imagine2touch.geometry import ObjectScan, Pose, Viewpoints
+from imagine2touch.interfaces import DepthCamera, Robot
 
 
 class ObjectScanner:
@@ -27,7 +28,7 @@ class ObjectScanner:
     still come within `margin` of the box, or if the robot does not reach it.
     """
 
-    def __init__(self, robot, camera, world_from_base, camera_in_sensor, box=((-0.05, -0.05, 0.01), (0.05, 0.05, 0.1)),
+    def __init__(self, robot: Robot, camera: DepthCamera, world_from_base, camera_in_sensor, box=((-0.05, -0.05, 0.01), (0.05, 0.05, 0.1)),
                  distance=0.12, tilt=np.pi / 4, margin=0.005, half_side=0.0085, settle=0.5, sleep=time.sleep):
         self.robot, self.camera, self.sleep, self.settle = robot, camera, sleep, settle
         self.world_from_base = Pose.from_matrix(world_from_base)

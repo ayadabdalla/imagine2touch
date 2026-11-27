@@ -6,7 +6,7 @@ Brings the scan of an object that was never touched into the form the recognitio
 The source is a point cloud in the frame of the scans [m], as the paper's recognition script loaded
 its candidates (`reskin/task/data/<object>/<object>_combined.pcd` of the original repository).  It is
 moved into the frame of the robot's base with the calibration of the March 2023 sessions
-(ScanPlacement), turned to millimetres and thinned like every scan of the dataset (ObjectScan).
+(TablePoseRecovery), turned to millimetres and thinned like every scan of the dataset (ObjectScan).
 The file holds `points` (n, 3).
 """
 
@@ -15,9 +15,9 @@ from pathlib import Path
 
 import numpy as np
 
-from imagine2touch.datasets.calibration.scan_placement import ScanPlacement
-from imagine2touch.datasets.recordings import PointCloudFile
 from imagine2touch.geometry import ObjectScan
+from .point_cloud_file import PointCloudFile
+from .table_pose_recovery import TablePoseRecovery
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     points = np.asarray(PointCloudFile.read(args.source), float)
-    in_base = points @ ScanPlacement.TABLE_IN_ROBOT_MARCH_2023[:3, :3].T + ScanPlacement.TABLE_IN_ROBOT_MARCH_2023[:3, 3]
+    in_base = points @ TablePoseRecovery.TABLE_IN_ROBOT_MARCH_2023[:3, :3].T + TablePoseRecovery.TABLE_IN_ROBOT_MARCH_2023[:3, 3]
     scan = ObjectScan.from_raw_points(1000 * in_base)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(args.out, points=scan.points.astype(np.float32))

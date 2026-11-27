@@ -23,12 +23,14 @@ model:                      # the thesis's training (AIS repository, commit e1fe
 correspondence:
   clusters: 5
   shuffles: 200             # random image-signal pairings used as the baseline
+  neighbours: 10            # touches with the most similar masks whose signals predict a touch's signal
+  folds: 5                  # parts each object's touches are split into; every part is predicted from the others
   figure:
     seed: 42
     spacing: [2.5, 1.0]     # minimum distance between example touches along each layout axis
 
 touch_prediction:
-  inputs: [mask, depth]
+  inputs: [mask, depth, scan]   # the wrist camera's contact mask and depth image, and the depth image of the object's scan
 
 object_recognition:
   touches: 10               # per object and trial, as in the paper

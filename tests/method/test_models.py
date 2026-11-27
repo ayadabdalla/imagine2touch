@@ -45,9 +45,11 @@ def test_the_networks_share_one_interface():
         assert rebuilt is None or rebuilt.shape == (4, 48 * 48)
 
 
-def test_the_classifier_names_the_stamps(stamps):
+def test_the_classifier_names_the_stamps_and_reloads(stamps, tmp_path):
     train, test = stamps.role == "train", stamps.role == "test"
     model = ShapeClassifier("wide", epochs=150).fit(stamps.signal[train], stamps.stamp[train])
     p = model.probabilities(stamps.signal[test])
     assert p.shape == (test.sum(), 5) and p.sum(1) == pytest.approx(1, abs=1e-5)
+    model.save(tmp_path / "classifier.pt")
+    assert ShapeClassifier.load(tmp_path / "classifier.pt").probabilities(stamps.signal[test]) == pytest.approx(p, abs=1e-6)
     assert (p.argmax(1) == stamps.stamp[test]).mean() > 0.6                    # chance is 0.2; the paper's full training reaches 0.91

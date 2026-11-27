@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 940.0" width="1120" height="940.0" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 1040" width="1120" height="1040" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 <defs>
 <marker id="a0d366b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M1,1.5 L9,5 L1,8.5 Z" fill="#0d366b"/></marker>
 <marker id="a1f9a8a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M1,1.5 L9,5 L1,8.5 Z" fill="#1f9a8a"/></marker>
@@ -10,142 +10,166 @@
 <marker id="ac7711d" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M1,1.5 L9,5 L1,8.5 Z" fill="#c7711d"/></marker>
 <marker id="ad1495b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M1,1.5 L9,5 L1,8.5 Z" fill="#d1495b"/></marker>
 <filter id="sh" x="-10%" y="-20%" width="120%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="3"/><feOffset dy="2"/><feComponentTransfer><feFuncA type="linear" slope="0.13"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<rect x="1" y="1" width="1118" height="938.0" rx="18" fill="#fcfcfb" stroke="#e1e0d9"/>
+<rect x="1" y="1" width="1118" height="1038" rx="18" fill="#fcfcfb" stroke="#e1e0d9"/>
 <text x="34" y="36" font-size="17" font-weight="700" fill="#0b0b0b">What depends on what</text>
 <text x="1086" y="36" font-size="12" fill="#898781" text-anchor="end">an arrow points from a package to one it imports</text>
-<rect x="20" y="58" width="1080" height="222" rx="12" fill="#f4f3ef" opacity="0.75"/>
-<text x="34" y="76" font-size="10" letter-spacing="1.4" fill="#898781" font-weight="600">SCRIPTS, WITH THE PACKAGES EACH IMPORTS</text>
-<rect x="30" y="86" width="256" height="84" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
-<text x="42" y="107" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">visualize_dataset.py</text>
-<rect x="42.0" y="118" width="97.9" height="18" rx="9" fill="#7a5fc4"/>
-<text x="90.9" y="130.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">visualization</text>
-<rect x="144.9" y="118" width="85.3" height="18" rx="9" fill="#2a78d6"/>
-<text x="187.5" y="130.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
-<rect x="42.0" y="141" width="66.4" height="18" rx="9" fill="#0d366b"/>
-<text x="75.2" y="153.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
-<rect x="298" y="86" width="256" height="84" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
-<text x="310" y="107" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">report_benchmark.py</text>
-<rect x="310.0" y="118" width="97.9" height="18" rx="9" fill="#7a5fc4"/>
-<text x="358.9" y="130.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">visualization</text>
-<rect x="412.9" y="118" width="85.3" height="18" rx="9" fill="#2a78d6"/>
-<text x="455.5" y="130.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
-<rect x="566" y="86" width="256" height="84" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
-<text x="578" y="107" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">run_benchmark.py</text>
-<rect x="578.0" y="118" width="85.3" height="18" rx="9" fill="#2a78d6"/>
-<text x="620.6" y="130.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
-<rect x="834" y="86" width="256" height="84" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
-<text x="846" y="107" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">train_model.py</text>
-<rect x="846.0" y="118" width="85.3" height="18" rx="9" fill="#2a78d6"/>
-<text x="888.6" y="130.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
-<rect x="936.3" y="118" width="66.4" height="18" rx="9" fill="#0d366b"/>
-<text x="969.5" y="130.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
-<rect x="1007.7" y="118" width="53.8" height="18" rx="9" fill="#6b8e23"/>
-<text x="1034.6" y="130.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">method</text>
-<rect x="30" y="182" width="322" height="84" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
-<text x="42" y="203" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">recognize_object.py</text>
-<rect x="42.0" y="214" width="85.3" height="18" rx="9" fill="#2a78d6"/>
-<text x="84.7" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
-<rect x="132.3" y="214" width="79.0" height="18" rx="9" fill="#1f9a8a"/>
-<text x="171.8" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">procedures</text>
-<rect x="216.3" y="214" width="60.1" height="18" rx="9" fill="#c7711d"/>
-<text x="246.4" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">devices</text>
-<rect x="42.0" y="237" width="79.0" height="18" rx="9" fill="#d1495b"/>
-<text x="81.5" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">simulation</text>
-<rect x="126.0" y="237" width="66.4" height="18" rx="9" fill="#0d366b"/>
-<text x="159.2" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
-<rect x="197.4" y="237" width="53.8" height="18" rx="9" fill="#6b8e23"/>
-<text x="224.3" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">method</text>
-<rect x="256.2" y="237" width="66.4" height="18" rx="9" fill="#3b3b3b"/>
-<text x="289.4" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">geometry</text>
-<rect x="364" y="182" width="234" height="84" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
-<text x="376" y="203" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">calibrate_camera.py</text>
-<rect x="376.0" y="214" width="79.0" height="18" rx="9" fill="#1f9a8a"/>
-<text x="415.5" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">procedures</text>
-<rect x="460.0" y="214" width="60.1" height="18" rx="9" fill="#c7711d"/>
-<text x="490.1" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">devices</text>
-<rect x="376.0" y="237" width="79.0" height="18" rx="9" fill="#d1495b"/>
-<text x="415.5" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">simulation</text>
-<rect x="460.0" y="237" width="66.4" height="18" rx="9" fill="#0d366b"/>
-<text x="493.2" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
-<rect x="610" y="182" width="234" height="84" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
-<text x="622" y="203" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">collect_data.py</text>
-<rect x="622.0" y="214" width="79.0" height="18" rx="9" fill="#1f9a8a"/>
-<text x="661.5" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">procedures</text>
-<rect x="706.0" y="214" width="60.1" height="18" rx="9" fill="#c7711d"/>
-<text x="736.0" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">devices</text>
-<rect x="622.0" y="237" width="79.0" height="18" rx="9" fill="#d1495b"/>
-<text x="661.5" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">simulation</text>
-<rect x="706.0" y="237" width="66.4" height="18" rx="9" fill="#0d366b"/>
-<text x="739.2" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
-<rect x="856" y="182" width="234" height="84" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
-<text x="868" y="203" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">scan_object.py</text>
-<rect x="868.0" y="214" width="79.0" height="18" rx="9" fill="#1f9a8a"/>
-<text x="907.5" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">procedures</text>
-<rect x="952.0" y="214" width="60.1" height="18" rx="9" fill="#c7711d"/>
-<text x="982.0" y="226.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">devices</text>
-<rect x="868.0" y="237" width="79.0" height="18" rx="9" fill="#d1495b"/>
-<text x="907.5" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">simulation</text>
-<rect x="952.0" y="237" width="66.4" height="18" rx="9" fill="#0d366b"/>
-<text x="985.2" y="249.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
+<rect x="20" y="58" width="1080" height="322" rx="12" fill="#f4f3ef" opacity="0.75"/>
+<text x="34" y="76" font-size="13" letter-spacing="1.6" fill="#0b0b0b" font-weight="800">SCRIPTS</text>
+<rect x="30" y="86" width="524" height="76" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
+<rect x="30" y="86" width="7" height="76" rx="3.5" fill="#898781"/>
+<text x="48" y="104" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#6b6a65" font-weight="600">scripts/ (main)</text>
+<text x="48" y="121" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">run_benchmark.py</text>
+<rect x="48.0" y="132" width="85.3" height="18" rx="9" fill="#2a78d6"/>
+<text x="90.7" y="144.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
+<rect x="566" y="86" width="524" height="76" rx="12" fill="#ffffff" stroke="#c3c2b7"/>
+<rect x="566" y="86" width="7" height="76" rx="3.5" fill="#898781"/>
+<text x="584" y="104" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#6b6a65" font-weight="600">scripts/ (main)</text>
+<text x="584" y="121" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">report_benchmark.py</text>
+<rect x="584.0" y="132" width="97.9" height="18" rx="9" fill="#7a5fc4"/>
+<text x="633.0" y="144.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">visualization</text>
+<rect x="686.9" y="132" width="85.3" height="18" rx="9" fill="#2a78d6"/>
+<text x="729.5" y="144.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
+<rect x="30" y="174" width="524" height="80" rx="12" fill="#ffffff"/>
+<rect x="30" y="174" width="524" height="80" rx="12" fill="#2a78d6" fill-opacity="0.07" stroke="#2a78d6" stroke-width="1.4"/>
+<rect x="30" y="174" width="7" height="80" rx="3.5" fill="#2a78d6"/>
+<text x="48" y="192" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#2a78d6" font-weight="600">experiments/scripts/</text>
+<text x="48" y="209" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">train_model.py</text>
+<rect x="48.0" y="220" width="85.3" height="18" rx="9" fill="#2a78d6"/>
+<text x="90.7" y="232.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
+<rect x="138.3" y="220" width="66.4" height="18" rx="9" fill="#0d366b"/>
+<text x="171.5" y="232.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
+<rect x="209.7" y="220" width="53.8" height="18" rx="9" fill="#6b8e23"/>
+<text x="236.6" y="232.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">method</text>
+<rect x="566" y="174" width="524" height="80" rx="12" fill="#ffffff"/>
+<rect x="566" y="174" width="524" height="80" rx="12" fill="#7a5fc4" fill-opacity="0.07" stroke="#7a5fc4" stroke-width="1.4"/>
+<rect x="566" y="174" width="7" height="80" rx="3.5" fill="#7a5fc4"/>
+<text x="584" y="192" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#7a5fc4" font-weight="600">visualization/scripts/</text>
+<text x="584" y="209" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">visualize_dataset.py</text>
+<rect x="584.0" y="220" width="97.9" height="18" rx="9" fill="#7a5fc4"/>
+<text x="633.0" y="232.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">visualization</text>
+<rect x="686.9" y="220" width="85.3" height="18" rx="9" fill="#2a78d6"/>
+<text x="729.5" y="232.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">experiments</text>
+<rect x="777.2" y="220" width="66.4" height="18" rx="9" fill="#0d366b"/>
+<text x="810.4" y="232.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
+<rect x="30" y="266" width="234" height="98" rx="12" fill="#ffffff"/>
+<rect x="30" y="266" width="234" height="98" rx="12" fill="#1f9a8a" fill-opacity="0.07" stroke="#1f9a8a" stroke-width="1.4"/>
+<rect x="30" y="266" width="7" height="98" rx="3.5" fill="#1f9a8a"/>
+<text x="48" y="284" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#1f9a8a" font-weight="600">procedures/scripts/</text>
+<text x="48" y="301" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">calibrate_camera.py</text>
+<rect x="48.0" y="312" width="79.0" height="18" rx="9" fill="#1f9a8a"/>
+<text x="87.5" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">procedures</text>
+<rect x="132.0" y="312" width="60.1" height="18" rx="9" fill="#c7711d"/>
+<text x="162.1" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">devices</text>
+<rect x="48.0" y="335" width="79.0" height="18" rx="9" fill="#d1495b"/>
+<text x="87.5" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">simulation</text>
+<rect x="132.0" y="335" width="66.4" height="18" rx="9" fill="#0d366b"/>
+<text x="165.2" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
+<rect x="276" y="266" width="234" height="98" rx="12" fill="#ffffff"/>
+<rect x="276" y="266" width="234" height="98" rx="12" fill="#1f9a8a" fill-opacity="0.07" stroke="#1f9a8a" stroke-width="1.4"/>
+<rect x="276" y="266" width="7" height="98" rx="3.5" fill="#1f9a8a"/>
+<text x="294" y="284" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#1f9a8a" font-weight="600">procedures/scripts/</text>
+<text x="294" y="301" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">scan_object.py</text>
+<rect x="294.0" y="312" width="79.0" height="18" rx="9" fill="#1f9a8a"/>
+<text x="333.5" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">procedures</text>
+<rect x="378.0" y="312" width="60.1" height="18" rx="9" fill="#c7711d"/>
+<text x="408.1" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">devices</text>
+<rect x="294.0" y="335" width="79.0" height="18" rx="9" fill="#d1495b"/>
+<text x="333.5" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">simulation</text>
+<rect x="378.0" y="335" width="66.4" height="18" rx="9" fill="#0d366b"/>
+<text x="411.2" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
+<rect x="522" y="266" width="234" height="98" rx="12" fill="#ffffff"/>
+<rect x="522" y="266" width="234" height="98" rx="12" fill="#1f9a8a" fill-opacity="0.07" stroke="#1f9a8a" stroke-width="1.4"/>
+<rect x="522" y="266" width="7" height="98" rx="3.5" fill="#1f9a8a"/>
+<text x="540" y="284" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#1f9a8a" font-weight="600">procedures/scripts/</text>
+<text x="540" y="301" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">collect_data.py</text>
+<rect x="540.0" y="312" width="79.0" height="18" rx="9" fill="#1f9a8a"/>
+<text x="579.5" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">procedures</text>
+<rect x="624.0" y="312" width="60.1" height="18" rx="9" fill="#c7711d"/>
+<text x="654.0" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">devices</text>
+<rect x="540.0" y="335" width="79.0" height="18" rx="9" fill="#d1495b"/>
+<text x="579.5" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">simulation</text>
+<rect x="624.0" y="335" width="66.4" height="18" rx="9" fill="#0d366b"/>
+<text x="657.2" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
+<rect x="768" y="266" width="322" height="98" rx="12" fill="#ffffff"/>
+<rect x="768" y="266" width="322" height="98" rx="12" fill="#1f9a8a" fill-opacity="0.07" stroke="#1f9a8a" stroke-width="1.4"/>
+<rect x="768" y="266" width="7" height="98" rx="3.5" fill="#1f9a8a"/>
+<text x="786" y="284" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#1f9a8a" font-weight="600">procedures/scripts/</text>
+<text x="786" y="301" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0b0b0b">recognize_object.py</text>
+<rect x="786.0" y="312" width="79.0" height="18" rx="9" fill="#1f9a8a"/>
+<text x="825.5" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">procedures</text>
+<rect x="870.0" y="312" width="60.1" height="18" rx="9" fill="#c7711d"/>
+<text x="900.0" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">devices</text>
+<rect x="935.1" y="312" width="79.0" height="18" rx="9" fill="#d1495b"/>
+<text x="974.6" y="324.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">simulation</text>
+<rect x="786.0" y="335" width="66.4" height="18" rx="9" fill="#0d366b"/>
+<text x="819.2" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">datasets</text>
+<rect x="857.4" y="335" width="53.8" height="18" rx="9" fill="#6b8e23"/>
+<text x="884.3" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">method</text>
+<rect x="916.2" y="335" width="66.4" height="18" rx="9" fill="#3b3b3b"/>
+<text x="949.4" y="347.6" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">geometry</text>
+<g transform="translate(0,100)">
 <rect x="20" y="294" width="1080" height="234" rx="12" fill="#f4f3ef" opacity="0.75"/>
-<text x="78" y="312" font-size="10" letter-spacing="1.4" fill="#898781" font-weight="600">PACKAGES</text>
+<text x="34" y="312" font-size="13" letter-spacing="1.6" fill="#0b0b0b" font-weight="800">PACKAGES</text>
 <rect x="20" y="558" width="1080" height="100" rx="12" fill="#f4f3ef" opacity="0.75"/>
-<text x="78" y="576" font-size="10" letter-spacing="1.4" fill="#898781" font-weight="600">DATA, CONTRACTS</text>
+<text x="560" y="578" font-size="10" letter-spacing="1.4" fill="#898781" font-weight="600" text-anchor="middle">DATA, CONTRACTS</text>
 <rect x="20" y="688" width="1080" height="220" rx="12" fill="#f4f3ef" opacity="0.75"/>
-<text x="78" y="706" font-size="10" letter-spacing="1.4" fill="#898781" font-weight="600">FOUNDATIONS</text>
-<path d="M200,510.0 L200,830.0" fill="none" stroke="#1f9a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a1f9a8a)"/>
-<path d="M450,380.0 C450,413.0 290,413.0 290,446.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
-<path d="M680,380.0 C680,413.0 720,413.0 720,446.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
-<path d="M608,380.0 L608,576.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
-<path d="M710,348 L1066.0,348.0 Q1080,348 1080.0,362.0 L1080,830.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
-<path d="M480,510.0 L480,576.0" fill="none" stroke="#7a5fc4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a7a5fc4)"/>
-<path d="M320,510.0 C320,543.0 390,543.0 390,576.0" fill="none" stroke="#1f9a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a1f9a8a)"/>
-<path d="M290,510.0 C290,608.0 300,608.0 300,706.0" fill="none" stroke="#1f9a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a1f9a8a)"/>
-<path d="M670,510.0 C670,543.0 632,543.0 632,576.0" fill="none" stroke="#d1495b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ad1495b)"/>
-<path d="M730,510.0 L730,830.0" fill="none" stroke="#d1495b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ad1495b)"/>
-<path d="M790,510.0 C790,543.0 820,543.0 820,576.0" fill="none" stroke="#d1495b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ad1495b)"/>
-<path d="M950,510.0 L950,576.0" fill="none" stroke="#c7711d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ac7711d)"/>
-<path d="M1035,510.0 L1035,830.0" fill="none" stroke="#c7711d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ac7711d)"/>
-<path d="M885,640.0 L885,830.0" fill="none" stroke="#7b828c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a7b828c)"/>
-<path d="M450,640.0 L450,706.0" fill="none" stroke="#0d366b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a0d366b)"/>
-<path d="M620,640.0 L620,830.0" fill="none" stroke="#0d366b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a0d366b)"/>
-<path d="M186,738 L214,738" fill="none" stroke="#f6f5f2" stroke-width="9"/>
-<path d="M410,348 L70.0,348.0 Q56,348 56.0,362.0 L56.0,724.0 Q56,738 70.0,738.0 L250,738" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
-<g filter="url(#sh)"><rect x="410.0" y="316.0" width="300" height="64" rx="12" fill="#ffffff" stroke="#2a78d6" stroke-width="1.6"/></g>
-<rect x="410.0" y="316.0" width="7" height="64" rx="3.5" fill="#2a78d6"/>
+<text x="560" y="708" font-size="10" letter-spacing="1.4" fill="#898781" font-weight="600" text-anchor="middle">FOUNDATIONS</text>
+<path d="M410,362 L184,362 Q170,362 170,376 L170,446" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
+<path d="M710,362 L936,362 Q950,362 950,376 L950,446" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
+<path d="M710,338 L1066,338 Q1080,338 1080,352 L1080,830" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
+<path d="M560,380 L560,516 C560,550 435,542 435,576" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
+<path d="M385,510 L385,576" fill="none" stroke="#7a5fc4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a7a5fc4)"/>
+<path d="M240,510 L240,576" fill="none" stroke="#1f9a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a1f9a8a)"/>
+<path d="M125,510 L125,712 Q125,726 139,726 L200,726" fill="none" stroke="#1f9a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a1f9a8a)"/>
+<path d="M90,510 L90,830" fill="none" stroke="#1f9a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a1f9a8a)"/>
+<path d="M300,640 L300,706" fill="none" stroke="#0d366b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a0d366b)"/>
+<path d="M440,640 L440,830" fill="none" stroke="#0d366b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a0d366b)"/>
+<path d="M725,510 L725,576" fill="none" stroke="#c7711d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ac7711d)"/>
+<path d="M635,510 L635,830" fill="none" stroke="#c7711d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ac7711d)"/>
+<path d="M880,510 L880,576" fill="none" stroke="#d1495b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ad1495b)"/>
+<path d="M1000,510 L1000,830" fill="none" stroke="#d1495b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ad1495b)"/>
+<path d="M790,640 L790,830" fill="none" stroke="#7b828c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a7b828c)"/>
+<path d="M300,770 L300,830" fill="none" stroke="#6b8e23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a6b8e23)"/>
+<path d="M552,413 L568,413" fill="none" stroke="#f6f5f2" stroke-width="9"/>
+<path d="M240,446 L240,427 Q240,413 254,413 L806,413 Q820,413 820,427 L820,576" fill="none" stroke="#1f9a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a1f9a8a)"/>
+<path d="M82,750 L98,750" fill="none" stroke="#f6f5f2" stroke-width="9"/>
+<path d="M410,338 L54,338 Q40,338 40,352 L40,736 Q40,750 54,750 L200,750" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a2a78d6)"/>
+<g filter="url(#sh)"><rect x="410" y="316" width="300" height="64" rx="12" fill="#ffffff" stroke="#2a78d6" stroke-width="1.6"/></g>
+<rect x="410" y="316" width="7" height="64" rx="3.5" fill="#2a78d6"/>
 <text x="563" y="345" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">experiments/</text>
 <text x="563" y="364" font-size="11.5" fill="#52514e" text-anchor="middle">the experiments of the paper</text>
-<g filter="url(#sh)"><rect x="155.0" y="446.0" width="190" height="64" rx="12" fill="#ffffff" stroke="#1f9a8a" stroke-width="1.6"/></g>
-<rect x="155.0" y="446.0" width="7" height="64" rx="3.5" fill="#1f9a8a"/>
-<text x="253" y="475" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">procedures/</text>
-<text x="253" y="494" font-size="11.5" fill="#52514e" text-anchor="middle">calibrate, scan, touch, recognise</text>
-<g filter="url(#sh)"><rect x="390.0" y="446.0" width="180" height="64" rx="12" fill="#ffffff" stroke="#7a5fc4" stroke-width="1.6"/></g>
-<rect x="390.0" y="446.0" width="7" height="64" rx="3.5" fill="#7a5fc4"/>
-<text x="483" y="475" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">visualization/</text>
-<text x="483" y="494" font-size="11.5" fill="#52514e" text-anchor="middle">figures</text>
-<g filter="url(#sh)"><rect x="645.0" y="446.0" width="190" height="64" rx="12" fill="#ffffff" stroke="#d1495b" stroke-width="1.6"/></g>
-<rect x="645.0" y="446.0" width="7" height="64" rx="3.5" fill="#d1495b"/>
-<text x="743" y="475" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">simulation/</text>
-<text x="743" y="494" font-size="11.5" fill="#52514e" text-anchor="middle">the same three, and a board</text>
-<g filter="url(#sh)"><rect x="875.0" y="446.0" width="180" height="64" rx="12" fill="#ffffff" stroke="#c7711d" stroke-width="1.6"/></g>
-<rect x="875.0" y="446.0" width="7" height="64" rx="3.5" fill="#c7711d"/>
-<text x="968" y="475" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">devices/</text>
-<text x="968" y="494" font-size="11.5" fill="#52514e" text-anchor="middle">real robot, sensor, camera</text>
-<g filter="url(#sh)"><rect x="350.0" y="576.0" width="300" height="64" rx="12" fill="#ffffff" stroke="#0d366b" stroke-width="1.6"/></g>
-<rect x="350.0" y="576.0" width="7" height="64" rx="3.5" fill="#0d366b"/>
-<text x="503" y="605" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">datasets/</text>
-<text x="503" y="624" font-size="11.5" fill="#52514e" text-anchor="middle">the datasets, recordings, calibrations</text>
-<g filter="url(#sh)"><rect x="760.0" y="576.0" width="250" height="64" rx="12" fill="#ffffff" stroke="#7b828c" stroke-width="1.6"/></g>
-<rect x="760.0" y="576.0" width="7" height="64" rx="3.5" fill="#7b828c"/>
-<text x="888" y="605" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">interfaces.py</text>
-<text x="888" y="624" font-size="11.5" fill="#52514e" text-anchor="middle">what the procedures ask of hardware</text>
-<g filter="url(#sh)"><rect x="250.0" y="706.0" width="300" height="64" rx="12" fill="#ffffff" stroke="#6b8e23" stroke-width="1.6"/></g>
-<rect x="250.0" y="706.0" width="7" height="64" rx="3.5" fill="#6b8e23"/>
-<text x="403" y="735" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">method/</text>
-<text x="403" y="754" font-size="11.5" fill="#52514e" text-anchor="middle">preprocessing, models, recognition</text>
-<g filter="url(#sh)"><rect x="39.5" y="830.0" width="1055" height="64" rx="12" fill="#ffffff" stroke="#3b3b3b" stroke-width="1.6"/></g>
-<rect x="39.5" y="830.0" width="7" height="64" rx="3.5" fill="#3b3b3b"/>
+<g filter="url(#sh)"><rect x="65" y="446" width="210" height="64" rx="12" fill="#ffffff" stroke="#1f9a8a" stroke-width="1.6"/></g>
+<rect x="65" y="446" width="7" height="64" rx="3.5" fill="#1f9a8a"/>
+<text x="173" y="475" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">procedures/</text>
+<text x="173" y="494" font-size="11.5" fill="#52514e" text-anchor="middle">calibrate, scan, touch, recognise</text>
+<g filter="url(#sh)"><rect x="325" y="446" width="210" height="64" rx="12" fill="#ffffff" stroke="#7a5fc4" stroke-width="1.6"/></g>
+<rect x="325" y="446" width="7" height="64" rx="3.5" fill="#7a5fc4"/>
+<text x="433" y="475" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">visualization/</text>
+<text x="433" y="494" font-size="11.5" fill="#52514e" text-anchor="middle">figures</text>
+<g filter="url(#sh)"><rect x="585" y="446" width="210" height="64" rx="12" fill="#ffffff" stroke="#c7711d" stroke-width="1.6"/></g>
+<rect x="585" y="446" width="7" height="64" rx="3.5" fill="#c7711d"/>
+<text x="693" y="475" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">devices/</text>
+<text x="693" y="494" font-size="11.5" fill="#52514e" text-anchor="middle">real robot, sensor, camera, board</text>
+<g filter="url(#sh)"><rect x="845" y="446" width="210" height="64" rx="12" fill="#ffffff" stroke="#d1495b" stroke-width="1.6"/></g>
+<rect x="845" y="446" width="7" height="64" rx="3.5" fill="#d1495b"/>
+<text x="953" y="475" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">simulation/</text>
+<text x="953" y="494" font-size="11.5" fill="#52514e" text-anchor="middle">simulated hardware</text>
+<g filter="url(#sh)"><rect x="200" y="576" width="260" height="64" rx="12" fill="#ffffff" stroke="#0d366b" stroke-width="1.6"/></g>
+<rect x="200" y="576" width="7" height="64" rx="3.5" fill="#0d366b"/>
+<text x="333" y="605" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">datasets/</text>
+<text x="333" y="624" font-size="11.5" fill="#52514e" text-anchor="middle">the datasets and the robot&#8217;s recordings</text>
+<g filter="url(#sh)"><rect x="660" y="576" width="260" height="64" rx="12" fill="#ffffff" stroke="#7b828c" stroke-width="1.6"/></g>
+<rect x="660" y="576" width="7" height="64" rx="3.5" fill="#7b828c"/>
+<text x="793" y="605" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">interfaces.py</text>
+<text x="793" y="624" font-size="11.5" fill="#52514e" text-anchor="middle">what the procedures ask of hardware</text>
+<g filter="url(#sh)"><rect x="200" y="706" width="220" height="64" rx="12" fill="#ffffff" stroke="#6b8e23" stroke-width="1.6"/></g>
+<rect x="200" y="706" width="7" height="64" rx="3.5" fill="#6b8e23"/>
+<text x="313" y="735" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">method/</text>
+<text x="313" y="754" font-size="11.5" fill="#52514e" text-anchor="middle">the paper&#8217;s computation, no robot</text>
+<g filter="url(#sh)"><rect x="40" y="830" width="1055" height="64" rx="12" fill="#ffffff" stroke="#3b3b3b" stroke-width="1.6"/></g>
+<rect x="40" y="830" width="7" height="64" rx="3.5" fill="#3b3b3b"/>
 <text x="570" y="859" font-size="16" font-weight="700" fill="#0b0b0b" text-anchor="middle">geometry/</text>
-<text x="570" y="878" font-size="11.5" fill="#52514e" text-anchor="middle">poses, scans, depth rendering</text>
-<text x="560.0" y="924.0" font-size="11.5" fill="#898781" text-anchor="middle">An arrow has the colour of the package that imports.  Not shown: paths.py, reskin_reading.py.</text>
+<text x="570" y="878" font-size="11.5" fill="#52514e" text-anchor="middle">poses, kinematics, camera calibration, scans, depth rendering</text>
+<text x="560.0" y="924" font-size="11.5" fill="#898781" text-anchor="middle">An arrow has the colour of the package that imports.  Not shown: paths.py.</text>
+</g>
 </svg>
