@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper below."
+title: "Imagine2touch"
+type: software
+repository-code: "https://github.com/ayadabdalla/imagine2touch"
+authors:
+  - family-names: Ayad
+    given-names: Abdallah
+  - family-names: Röfer
+    given-names: Adrian
+  - family-names: Heppert
+    given-names: Nick
+  - family-names: Valada
+    given-names: Abhinav
+preferred-citation:
+  type: conference-paper
+  title: "Imagine2touch: Predictive Tactile Sensing for Robotic Manipulation using Efficient Low-Dimensional Signals"
+  authors:
+    - family-names: Ayad
+      given-names: Abdallah
+    - family-names: Röfer
+      given-names: Adrian
+    - family-names: Heppert
+      given-names: Nick
+    - family-names: Valada
+      given-names: Abhinav
+  collection-title: "ViTac Workshop, IEEE International Conference on Robotics and Automation (ICRA)"
+  year: 2024
+  url: "https://arxiv.org/abs/2405.01192"
+  identifiers:
+    - type: other
+      value: "arXiv:2405.01192"
+      description: "The arXiv preprint"
