@@ -4,7 +4,7 @@ Reduces the recordings of the robot to the file behind VisuoTactileDataset.
     python -m imagine2touch.datasets.recordings.recording_reducer --source PATH/TO/Imagine2touch_data
     python -m imagine2touch.datasets.recordings.recording_reducer --source PATH/TO/Imagine2touch_data --all
     python -m imagine2touch.datasets.recordings.recording_reducer --source PATH/TO/Imagine2touch_data \\
-        --sessions cylinder_v_6 flower_v_6 hexagon_v_6 parallelogram_v_6 square_v_6 star_v_6 --out data/imagine2touch_v6.npz
+        --sessions flower hexagon --out data/two_objects.npz
 
 The first keeps the six sessions of the paper; --all keeps every session that is complete enough,
 including those recorded after the paper's; --sessions keeps the ones it names.
@@ -12,7 +12,7 @@ including those recorded after the paper's; --sessions keeps the ones it names.
 The recordings store where the sensor was sent, not where it stopped.  The pose it stopped at is
 computed from the joint angles, which were recorded in contact, with Franka's kinematics and the
 fitted position of the sensor on the flange (ToolCalibration), fitted once for the sessions of
-March 2023 and once for those of September 2023.  Where a session did not store where its scan
+March 2023 and once for those with an ambient reading before every touch.  Where a session did not store where its scan
 stood under the robot, the calibration of its recording code is used (ScanPlacement).  Recordings that do store the reached pose, those
 of procedures/RecordingWriter, are taken as they are.
 """
@@ -42,7 +42,7 @@ class RecordingReducer:
         for recording in unplaced:                              # the sessions of March 2023: the calibration of their recording code
             recording.placement = ScanPlacement.stored()
         fitted = [r for r in self.recordings if r.reached is None]
-        self.tool = ToolCalibration.fit([r for r in fitted if r.ambient_per_touch])            # September 2023
+        self.tool = ToolCalibration.fit([r for r in fitted if r.ambient_per_touch])            # an ambient reading before every touch
         self.early_tool = ToolCalibration.fit([r for r in fitted if not r.ambient_per_touch])   # March 2023
         self.objects = sorted({r.object for r in self.recordings})
         self.shapes = sorted({r.shape for r in self.recordings})

@@ -27,12 +27,19 @@ TABLES = [   # title, table of ResultsAnalyzer, what it shows
      "loss of always predicting the mean training signal.  Thesis Fig. 23: 0.06 in training, 0.10 on the three "
      "recognition objects."),
     ("Object recognition (paper: Table II), repeated by a simulated robot", "object_recognition",
-     "A simulated robot touches the scan of parallelogram, square or star from the v6 sessions ten times, following the paper's "
-     "procedure, once per object.  Every touch counts.  Where the sensor meets the object it feels the signal "
-     "recorded at the nearest real touch; where it meets nothing it feels nothing.  Share of single touches that vote "
-     "for the touched object, and share of runs that name it.  The paper measured this once on the robot "
-     "(primitives, per touch: 50% with the model, 23% with proprioception); those runs were not recorded, so "
-     "these numbers are not the paper's."),
+     "A simulated robot touches the scan of parallelogram, square or star ten times, following the paper's "
+     "procedure.  One such round of ten touches is a trial; each object gets twenty trials with each seed's model.  The model is trained on flower and hexagon only, on depth images "
+     "of their scans.  Where the sensor meets the object, both methods are scored from the real touch recorded "
+     "nearest to it: its signal and its pose.  Share of single touches that vote for the touched object, per "
+     "object and on average, and share of trials that name it; means over the seeds.  The paper measured this once "
+     "on the robot.  The votes of those runs are kept (original repository, reskin/task/results): for parallelogram, "
+     "square and star 40%, 70% and 40% with the model (50% on average) and 30%, 20% and 20% with proprioception "
+     "(23%).  The touches themselves were not kept, so those runs cannot be scored again."),
+    ("Object recognition, tools (paper: Table II)", ("object_recognition", "tool_recognition"),
+     "The same test with the paper's second set of objects, the tools: a box cutter and a hanger, and the "
+     "same model.  The robot touches the cutter; the hanger was only scanned, so it cannot be the touched object.  "
+     "Chance is 50%.  On the paper's robot (one run per tool): the model voted for the cutter in 60% of the touches and "
+     "for the hanger in 80% (Table II: 70%), proprioception in 100% and 60% (Table II: 80%)."),
 ]
 
 if __name__ == "__main__":

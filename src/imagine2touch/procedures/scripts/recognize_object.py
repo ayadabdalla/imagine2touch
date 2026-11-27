@@ -7,9 +7,10 @@ Recognise an object by touching it (paper: Table II; needs the robot, or --simul
 
 With --simulate, the scan of --object, one of the paper's recognition objects, stands in front of the
 simulated robot.  As in the paper, the robot aims every touch at the object it currently believes to be
-there, and names the real one among the paper's three recognition objects.  Where it meets the object it feels
-the signal recorded at the nearest real touch; where it meets nothing it feels nothing.
-The model is the paper's (`python -m imagine2touch.experiments.scripts.train_model`); it is trained first if it is not there yet.
+there, and names the real one among the paper's three recognition objects.  Where it meets the object, the
+touch is scored from the real touch recorded nearest to it; where it meets nothing it feels nothing.
+The model is the benchmark's (`python -m imagine2touch.experiments.scripts.train_model`); it is trained first if it is not there yet.
+The images it is trained on and shown are those of `object_recognition` in configs/benchmark.yaml.
 With the robot, --candidates are the scans of the objects to choose among, in the world frame [m].
 """
 
@@ -20,7 +21,7 @@ from pathlib import Path
 import numpy as np
 
 from imagine2touch.datasets.recordings import PointCloudFile
-from imagine2touch.experiments import Benchmark
+from imagine2touch.experiments import Benchmark, Config
 from imagine2touch.geometry import ObjectScan
 from imagine2touch.method.models import TouchModel
 from imagine2touch.paths import ROOT
@@ -30,11 +31,11 @@ from imagine2touch.simulation import SimulatedCamera, SimulatedRobot, SimulatedS
 MODEL = ROOT / "results" / "models" / "imagine2touch.pt"
 
 
-def paper_model(bench, path, seed):
-    """The paper's model on contact masks: loaded from `path`, or trained and saved there."""
+def trained_model(bench, path, seed):
+    """The benchmark's model, on the images its recognition experiment trains on: loaded from `path`, or trained and saved there."""
     if Path(path).exists():
         return TouchModel.load(path)
-    model = bench.trained_model(seed, "mask")
+    model = bench.trained_model(seed, bench.config.object_recognition.train_on)
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     model.save(path)
     return model
@@ -50,10 +51,11 @@ if __name__ == "__main__":
                     help="what a touch says about a candidate: the touch model, or the paper's baseline, where the sensor stopped")
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
-    rng = np.random.default_rng(args.seed)
+    rng, replay = np.random.default_rng(args.seed), None
+    settings = Config().object_recognition
     if args.simulate:
         bench = Benchmark()
-        dataset, model = bench.touches, paper_model(bench, args.model, args.seed)
+        dataset, model = bench.touches, trained_model(bench, args.model, args.seed)
         scene = SimulatedScene.of_session(dataset, args.object)
         robot = SimulatedRobot(scene, rng=rng)
         sensor, camera = SimulatedSensor.of_session(robot, dataset, args.object), SimulatedCamera(robot)
@@ -62,6 +64,7 @@ if __name__ == "__main__":
         normals = {name: ObjectScan.normals_of(points) for name, points in scans.items()}
         collector = TouchCollector(robot, sensor, camera, scans[args.object], normals[args.object], scene.world_from_base,
                                    camera.camera_in_sensor, candidates=1, rng=rng, sleep=lambda seconds: None)
+        replay = sensor.recorded_touch if settings.replay else None
     else:
         from imagine2touch.devices.franka_robot import FrankaRobot
         from imagine2touch.devices.realsense_camera import RealSenseCamera
@@ -72,7 +75,7 @@ if __name__ == "__main__":
         first = args.candidates[0]
         collector = TouchCollector(FrankaRobot(), ReSkinSensor(), RealSenseCamera(), scans[first], normals[first],
                                    np.linalg.inv(np.load(args.world)), np.load(args.camera), candidates=1, rng=rng, sleep=time.sleep)
-    recogniser = TouchingRecogniser(collector, scans, normals, model, "scan_mask", args.evidence, rng=rng)
+    recogniser = TouchingRecogniser(collector, scans, normals, model, settings.recognise_with, args.evidence, replay=replay, rng=rng)
     name, probabilities = recogniser.recognise(args.touches)
     print("aimed at: " + ", ".join(recogniser.guesses))
     for candidate, p in probabilities.items():

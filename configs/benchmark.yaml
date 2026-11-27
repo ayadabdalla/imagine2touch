@@ -1,5 +1,5 @@
-seeds: [0]
-experiments: [shape_classification, correspondence, touch_prediction]     # object_recognition runs on the v6 sessions
+seeds: [0, 1, 2, 3, 4]    # every seed trains its own models; the results are means over them
+experiments: [shape_classification, correspondence, touch_prediction, object_recognition, tool_recognition]
 
 data:
   file: imagine2touch.npz
@@ -7,6 +7,7 @@ data:
   train: [flower, hexagon]
   validation: [cutter]
   recognition: [parallelogram, square, star]
+  tools: [cutter, hanger]   # the paper's second set of objects; the hanger was only scanned (data/scans/hanger.npz)
   max_signal: null          # no touch is dropped: the quantile scaling makes the one glitched reading harmless
 
 model:                      # the thesis's training (AIS repository, commit e1fe6d0f of 31 August 2023)
@@ -16,7 +17,7 @@ model:                      # the thesis's training (AIS repository, commit e1fe
   patience: null
   lr: 1.0e-3
   batch_size: 64
-  image_weight: 1.0         # weight of the mask error (binary cross-entropy) relative to the touch error
+  image_weight: 1.0         # weight of the error of the rebuilt image relative to the touch error: binary cross-entropy for masks (thesis, Sec. 5.4), squared error for depth images
   device: auto
 
 correspondence:
@@ -30,16 +31,18 @@ touch_prediction:
   inputs: [mask, depth]
 
 object_recognition:
-  touches: 10               # per object
-  runs: 1                   # per object, as in the paper
+  touches: 10               # per object and trial, as in the paper
+  runs: 20                  # trials per object and seed (the paper ran one)
   targets: 5000             # scan points per candidate used as aim points
-  reach: null               # every touch counts, as on the paper's robot; a number here keeps only touches this close to a real one [m]
+  reach: null               # a number here keeps only touches this close to a real one [m]
   turn: null                # and one here only those made from within this angle of it [degrees]
+  replay: true              # where the sensor meets the object, both methods are scored from the real touch recorded nearest: its signal and its pose
+  train_on: scan            # the images the model is trained on: scan (depth image of the object's scan), scan_mask, or mask (the camera's, as in the paper's code)
+  recognise_with: scan      # how the candidates are shown to it: scan or scan_mask (as in the paper's code)
 
 shape_classification:
   network: wide             # 15 - 500 - 10 - 5
   epochs: 130               # as long as the thesis trained (its Fig. 23)
   lr: 1.0e-3
   batch_size: 64
-  seed: 123
   certainty: 0.9            # probability above which a class counts as named

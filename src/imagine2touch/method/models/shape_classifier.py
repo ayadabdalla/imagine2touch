@@ -20,7 +20,7 @@ class ShapeClassifier:
 
     LAYERS = {"deep": (40, 100, 100), "wide": (500, 10)}
 
-    def __init__(self, architecture="wide", classes=5, epochs=1000, lr=1e-3, batch_size=64, seed=123, standardise=False):
+    def __init__(self, architecture="wide", classes=5, epochs=1000, lr=1e-3, batch_size=64, seed=0, standardise=False):
         self.epochs, self.lr, self.batch_size, self.seed, self.standardise = epochs, lr, batch_size, seed, standardise
         torch.manual_seed(seed)
         sizes, layers = (15, *self.LAYERS[architecture]), []

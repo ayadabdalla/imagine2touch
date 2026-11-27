@@ -28,6 +28,9 @@ class TouchingRecogniser:
     its surface normals in the world frame [m]; `model` is a TouchModel trained on images of kind
     `image_input`, "scan" or "scan_mask".  The robot aims at `per_candidate` points of each scan.
     `accept`, if given, is asked for every touch's record whether the touch counts; a refused touch is aimed again.
+    `replay`, if given, takes the pose the sensor stopped in and returns the real touch a simulated
+    sensor answered with there, (its pose, its signal), or None: both kinds of evidence are then
+    taken from that real touch, not from the simulated stop.
     """
 
     FACING = (0.2, 1.0)         # a point counts where the other surface faces between these cosines of its own direction
@@ -35,8 +38,8 @@ class TouchingRecogniser:
     APPROACH = ApproachSettings(step=0.002, max_force=7.0, tolerance=0.005)     # the approach of the paper's recognition script
 
     def __init__(self, collector, candidates, normals, model=None, image_input="scan_mask", evidence="touch", rule=None,
-                 grid=None, per_candidate=300, accept=None, rng=None):
-        self.collector, self.model, self.evidence, self.accept = collector, model, evidence, accept
+                 grid=None, per_candidate=300, accept=None, replay=None, rng=None):
+        self.collector, self.model, self.evidence, self.accept, self.replay = collector, model, evidence, accept, replay
         self.grid, self.rng = grid or SensorGrid(size=48), rng or np.random.default_rng()
         self.image_input = IMAGE_INPUTS[image_input]
         self.names = list(candidates)
@@ -95,10 +98,12 @@ class TouchingRecogniser:
 
     def cost(self, record):
         """Takes the record of a touch.  Returns the cost of every candidate, (c,)."""
-        stopped = Pose.from_matrix(record["pose"])
+        stopped, felt = Pose.from_matrix(record["pose"]), record["reading"] - record["ambient"]
+        real = self.replay(stopped) if self.replay is not None else None
+        if real is not None:
+            stopped, felt = real
         if self.evidence == "proprioception":
             return ProprioceptionEvidence.cost(1000 * stopped.t, self.scans)
-        felt = record["reading"] - record["ambient"]
         return TouchEvidence.from_model(self.model, felt[None], self.images(stopped)[None])[0]
 
     def touch(self):

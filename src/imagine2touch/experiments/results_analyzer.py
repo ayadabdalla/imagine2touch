@@ -63,12 +63,13 @@ class ResultsAnalyzer:
         columns = [f"{name}_{kind}" for name in ("training", "validation", "recognition") for kind in ("error", "average")]
         return table.groupby(["input", "readings"])[columns].mean()
 
-    def object_recognition(self):
+    def object_recognition(self, experiment="object_recognition"):
         """
         Table II of the paper, repeated by a simulated robot: per method, the share of single touches that
         vote for the touched object, per object and on average, and the share of runs that name it.
+        `experiment` may also be "tool_recognition".
         """
-        table = self.records("object_recognition")
+        table = self.records(experiment)
         per = table.pivot_table(index="rule", columns="shape", values="per_touch")
         per["mean per touch"] = per.mean(axis=1)
         per["named after all touches"] = table.groupby("rule").after_touches.mean()

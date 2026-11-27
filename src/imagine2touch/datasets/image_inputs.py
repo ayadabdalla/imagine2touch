@@ -27,7 +27,7 @@ class ImageInput(ABC):
 
 
 class CameraMask(ImageInput):
-    """The contact mask of the wrist camera's depth image: what the paper's model is trained on."""
+    """The contact mask of the wrist camera's depth image: what the paper's code trains the model on (the paper: a processed depth image)."""
 
     name, binary = "mask", True
 

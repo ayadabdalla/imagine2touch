@@ -17,7 +17,7 @@ SMALL = ["seeds=[0]", "experiments=[shape_classification, correspondence, touch_
 def test_every_experiment_runs_and_can_be_resumed(touches, stamps, tmp_path, capsys):
     bench = Benchmark(Config(overrides=SMALL), touches, stamps, tmp_path)
     bench.run()
-    for name in EXPERIMENTS:
+    for name in bench.config.experiments:
         assert len(pd.read_csv(tmp_path / f"{name}.csv")) > 0
     recognition = pd.read_csv(tmp_path / "object_recognition.csv")
     assert set(recognition["shape"]) == {"star", "hexagon"} and set(recognition.rule) == {"touch model", "proprioception"}

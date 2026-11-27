@@ -146,6 +146,7 @@ wandb
 .venv/
 data/*
 !data/README.md
+!data/scans/
 results/
 /scans/
 /calibration/

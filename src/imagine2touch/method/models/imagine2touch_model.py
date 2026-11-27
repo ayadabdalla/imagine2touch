@@ -16,7 +16,7 @@ class TouchModel:
 
     Training minimises the squared error of the scaled signal, plus `image_weight` times the error of
     the rebuilt image for networks that rebuild it: the binary cross-entropy for masks
-    (`binary_images`, as in the paper) or the squared error.  With a validation set, training stops
+    (`binary_images`, as in the thesis) or the squared error.  With a validation set, training stops
     when its error has not improved for `patience` epochs, and the best weights are kept.
     """
 

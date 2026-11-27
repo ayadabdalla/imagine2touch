@@ -57,7 +57,7 @@ class Recording:
     # ------------------------------------------------------------------ where things are
     @property
     def shape(self):
-        """'star_v_6' -> 'star': the same printed shape was recorded in several sessions."""
+        """'star_v_1' -> 'star': the same printed shape was recorded in several sessions."""
         return re.sub(r"_v_\d+$", "", self.object)
 
     def array_path(self, key):
@@ -106,8 +106,8 @@ class Recording:
     def _ambient(raw, n):
         """
         The reading out of contact for each of n touches, (n, 15), and whether one was taken per touch.
-        The sessions of September 2023 took one before every touch.  Those of March 2023 took ten
-        readings before every tenth touch; their mean serves the ten touches that follow.
+        Some sessions took one before every touch.  Those of March 2023 took ten readings before
+        every tenth touch; their mean serves the ten touches that follow.
         """
         if raw.ndim == 2 and raw.shape[1] == 15:
             groups = np.asarray(raw, float)

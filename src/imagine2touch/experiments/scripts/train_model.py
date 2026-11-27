@@ -1,8 +1,8 @@
 """
 Train the Imagine2touch model on the dataset and save it.
 
-    python -m imagine2touch.experiments.scripts.train_model                                              # the paper's model, on contact masks
-    python -m imagine2touch.experiments.scripts.train_model --input scan --out results/models/scan.pt    # on depth images rendered from the scans
+    python -m imagine2touch.experiments.scripts.train_model                                              # the benchmark's model, on depth images of the scans
+    python -m imagine2touch.experiments.scripts.train_model --input mask --out results/models/mask.pt    # as in the paper's code, on the camera's contact masks
 
 Trains on the paper's training objects (flower, hexagon) with the recipe of configs/benchmark.yaml
 and reports the error on its validation object (cutter).  Use the model with
@@ -24,12 +24,13 @@ from imagine2touch.datasets import IMAGE_INPUTS
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--input", default="mask", choices=sorted(IMAGE_INPUTS))
+    ap.add_argument("--input", default=None, choices=sorted(IMAGE_INPUTS), help="default: object_recognition.train_on of the configuration")
     ap.add_argument("--architecture", default="mlp", choices=sorted(ARCHITECTURES))
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default=ROOT / "results" / "models" / "imagine2touch.pt")
     args = ap.parse_args()
     bench = Benchmark()
+    args.input = args.input or bench.config.object_recognition.train_on
     data, split = bench.selection(), bench.config.data
     images, signal = data.images(args.input), data.signal
     train, held = np.isin(data.shape, split.train), np.isin(data.shape, split.validation)

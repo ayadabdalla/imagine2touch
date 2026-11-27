@@ -47,14 +47,14 @@ class StampVisualizer:
         position, positions = d.position_index, 1000 * np.unique(d.position.round(5), axis=0)
         chosen = [int(np.abs(positions - p).sum(1).argmin()) for p in shown]
         W, side, gap, left = 9.5, 1.05, 0.34, 2.25
-        fig = plt.figure(figsize=(W, 1.42 + (side + 0.25) * (1 + len(chosen))))
+        fig = plt.figure(figsize=(W, 1.59 + (side + 0.25) * (1 + len(chosen))))
         H = fig.get_figheight()
         fig.text(0.3 / W, 1 - 0.3 / H, "Five stamps pressed into the sensor", fontsize=12, weight="bold")
         fig.text(0.3 / W, 1 - 0.44 / H, f"{len(d):,} presses of stamps smaller than the sensor, {int((d.stamp == 0).sum())} of each, at {len(positions)} "
-                 f"positions on it. Shown for {len(chosen)} positions:\nthe mean touch signal of every stamp, as the size of the change of the "
-                 "field in all three directions at the five magnetometers.\n"
+                 f"positions on it,\neach to four set depths 0.3 mm apart, not to a set force. Shown for {len(chosen)} positions: the mean touch signal of every stamp\n"
+                 "over its depths, as the size of the change of the field in all three directions at the five magnetometers.\n"
                  "A stamp fits the finger in two ways, turned by 180 degrees to each other; which one was used was not recorded.", color=Style.INK_2, va="top", linespacing=1.3)
-        top = 1.22
+        top = 1.39
         for c, stamp in enumerate(d.STAMPS):
             x = (left + c * (side + gap)) / W
             fig.text(x, 1 - (top + 0.02) / H, stamp, fontsize=9, va="bottom")

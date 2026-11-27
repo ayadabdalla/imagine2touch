@@ -14,14 +14,12 @@ Two files go here, both from the
 python -m imagine2touch.datasets.recordings.recording_reducer --source PATH/TO/Imagine2touch_data
 ```
 
-A third file is only needed for `configs/v6.yaml`: `imagine2touch_v6.npz`,
-the six sessions recorded in September 2023, after the paper's. They are part of the raw recordings;
-build the file from them:
+`scans/hanger.npz` is part of the repository: the scan of the hanger, the one candidate of the paper's
+recognition experiment that was never touched for the dataset. It is made from the point cloud of the
+original repository (`reskin/task/data/hanger/hanger_combined.pcd`) by
 
 ```bash
-python -m imagine2touch.datasets.recordings.recording_reducer --source PATH/TO/Imagine2touch_data \
-    --sessions cylinder_v_6 flower_v_6 hexagon_v_6 parallelogram_v_6 square_v_6 star_v_6 \
-    --out data/imagine2touch_v6.npz
+python -m imagine2touch.datasets.recordings.scan_converter --source PATH/TO/hanger_combined.pcd --out data/scans/hanger.npz
 ```
 
 What the files hold is described in `src/imagine2touch/datasets/visuo_tactile_dataset.py` and

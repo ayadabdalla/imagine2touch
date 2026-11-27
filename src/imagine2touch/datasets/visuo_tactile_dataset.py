@@ -42,8 +42,8 @@ class VisuoTactileDataset:
     Robot
       commanded, pose   the N poses the sensor was sent to and the N poses it stopped at
       joints            (N, 7) joint angles when it stopped [rad]
-      tool, early_tool  the fitted pose of the sensor in the frame of the robot's flange, in the
-                        sessions of September and of March 2023
+      tool, early_tool  the fitted pose of the sensor in the frame of the robot's flange: in the sessions
+                        with an ambient reading before every touch, and in those of March 2023
     Objects
       object, shape     (N,) indices into `objects`, the recorded sessions, and `shapes`, the printed shapes
       experiment        (N,) number of the experiment within the session
@@ -82,7 +82,7 @@ class VisuoTactileDataset:
     def sessions(self, which):
         """
         Sessions as indices into `objects`.  `which` is a list of session names, in which case their
-        order is kept, or the ending of the names, e.g. '_v_6'.
+        order is kept, or the ending of the names, e.g. '_v_1'.
         """
         if isinstance(which, str):
             return [k for k, name in enumerate(self.objects) if name.endswith(which)]

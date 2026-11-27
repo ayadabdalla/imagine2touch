@@ -205,9 +205,9 @@ class DatasetVisualizer:
         y, left = (lambda inches: 1 - inches / H), 0.3 / W           # a height measured from the top, in inches
 
         fig.text(left, y(0.3), "Imagine2touch dataset", fontsize=12, weight="bold")
-        fig.text(left, y(0.44), f"{len(rows):,} touches of {len(placed)} objects; up to {shown} of each are drawn on the object's scan. A dot is where the "
-                 "sensor stopped; the line points back the way it came.\nAbove each scan is a photograph of the object. The number of "
-                 "touches is in brackets; the primitives are approx. 3 to 4 cm wide.",
+        fig.text(left, y(0.44), f"{len(rows):,} touches of {len(placed)} objects (the number per object is in brackets); up to {shown} of each are "
+                 "drawn on the object's scan, below its photograph.\nA dot is where the sensor stopped; the line points back the way "
+                 "it came. The primitives are approx. 3 to 4 cm wide.",
                  color=Style.INK_2, va="top", linespacing=1.3)
         side = min(2.3, (W - 0.6 - 0.1 * (len(placed) - 1)) / len(placed))
         photo = 0.72 * side if self.photos is not None else 0.0

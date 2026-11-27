@@ -3,9 +3,11 @@ The shape classification dataset (paper: Table I and Fig. 3; thesis: Sec. 5.1).
 
 The sensor is mounted on a fixture.  The robot holds one of five 3D-printed stamps, each smaller
 than the sensing surface (a letter T, a circle, an angle, a triangle and a cross), and presses it into
-the skin at eight positions of a grid, to four depths each, again and again.  Every press is one
-touch signal; the question is whether the signal tells which stamp it was.  A stamp fits the finger
-in two ways, turned by 180 degrees to each other; which one was used was not recorded.
+the skin at eight positions of a grid, to four depths each, again and again.  The robot went
+to set depths, 0.3 mm apart, not to a set force.  The recordings hold the force it estimated at
+every press; the depth of a press follows from their order (four depths at every position).  Every
+press is one touch signal; the question is whether the signal tells which stamp it was.  A stamp
+fits the finger in two ways, turned by 180 degrees to each other; which one was used was not recorded.
 
 The 1,280 presses of the paper, 256 of every stamp, are in `data/shape_classification.npz` with the
 paper's split into training, validation and test presses, made from the recordings by
@@ -27,6 +29,7 @@ class ShapeClassificationDataset:
       session    (N,) index into `sessions`, the recorded folders
       position   (N, 2) where on the sensing surface the stamp was pressed [m]
       force      (N,) force along the press that the robot estimated [N]
+      depth      (N,) how far the stamp was pressed in [m]: 0.3, 0.6, 0.9 or 1.2 mm; None if the file has no such column
     """
 
     FILE = "shape_classification.npz"
@@ -38,6 +41,7 @@ class ShapeClassificationDataset:
             z = np.load(self.path)
             self.signal, self.stamp, self.session = np.abs(z["signal"].astype(float)), z["stamp"], z["session"]
             self.position, self.force, self.sessions = z["position"], z["force"], [str(s) for s in z["sessions"]]
+            self.depth = z["depth"] if "depth" in z else None
             roles = [str(r) for r in z["roles"]] if "roles" in z else ["train"]
             index = z["role"] if "role" in z else np.zeros(len(self.stamp), int)
             self.role = np.array([roles[i] if i >= 0 else "unused" for i in index])

@@ -50,14 +50,22 @@ class Benchmark:
     def trained_model(self, seed, kind, cleaned=True):
         """
         The model of the paper, trained once and shared by the experiments: the paper's network and
-        recipe on the paper's training objects, with images of `kind`.
+        recipe on the paper's training objects, with images of `kind`.  Its weights are kept in
+        <results>/models/touch_<kind>_seed<seed>.pt and loaded from there if the file exists.
         """
         key = (seed, kind, cleaned)
+        path = self.results / "models" / f"touch_{kind}_seed{seed}.pt"
+        if key not in self._models and cleaned and path.exists():      # a saved model is loaded, not trained again
+            print(f"loading the model {path}", flush=True)
+            self._models[key] = TouchModel.load(path)
         if key not in self._models:
             data = self.selection(cleaned)
             train = np.isin(data.shape, self.config.data.train)
             print(f"training the model on {int(train.sum())} touches ({kind}, {'cleaned' if cleaned else 'as recorded'})", flush=True)
             self._models[key] = self.touch_model(seed, kind).fit(data.images(kind)[train], data.signal[train])
+            if cleaned:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                self._models[key].save(path)
         return self._models[key]
 
     # ------------------------------------------------------------------ running

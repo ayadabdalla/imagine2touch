@@ -50,14 +50,21 @@ class StampRecordingConverter:
         for name in ("reskin_sensor", "reskin_sensor.sensor"):
             sys.modules.setdefault(name, types.ModuleType(name)).ReSkinData = record
 
-    @staticmethod
-    def session(folder):
-        """Signal, position and force of every press in one folder."""
+    DEPTHS = (0.3e-3, 0.6e-3, 0.9e-3, 1.2e-3)       # the depths the recording script went through at every position [m]
+
+    @classmethod
+    def session(cls, folder):
+        """
+        Signal, position, force and depth of every press in one folder.  The depth was not written
+        down; it follows from the order, since the script went through the four depths at every
+        position: the position changes after every fourth press, in all recordings.
+        """
         load = lambda name: np.load(folder / name, allow_pickle=True)
         reading = np.array([ReSkinReading.field(r) for r in load("reskin_readings")])
         ambient = np.array([ReSkinReading.field(group[0]) for group in load("ambient_readings")])     # the first of the ten
         repeats = int(np.ceil(len(reading) / len(ambient)))
-        return reading - np.repeat(ambient, repeats, axis=0)[:len(reading)], load("pose"), load("force")
+        depth = np.array(cls.DEPTHS)[np.arange(len(reading)) % len(cls.DEPTHS)]
+        return reading - np.repeat(ambient, repeats, axis=0)[:len(reading)], load("pose"), load("force"), depth
 
     def split(self, stamp):
         """
@@ -82,10 +89,10 @@ class StampRecordingConverter:
     def convert(self, path=None, report=print, everything=False):
         """Write the dataset file; `everything` keeps the presses the paper's draw left out, with role -1."""
         stamps = ShapeClassificationDataset.STAMPS
-        rows = {key: [] for key in ("signal", "stamp", "session", "position", "force")}
+        rows = {key: [] for key in ("signal", "stamp", "session", "position", "force", "depth")}
         for k, folder in enumerate(self.folders):
-            signal, position, force = self.session(folder)
-            rows["signal"].append(signal), rows["position"].append(position), rows["force"].append(force)
+            signal, position, force, depth = self.session(folder)
+            rows["signal"].append(signal), rows["position"].append(position), rows["force"].append(force), rows["depth"].append(depth)
             rows["stamp"].append(np.full(len(signal), stamps.index(FOLDERS[folder.name.split("_")[0]])))
             rows["session"].append(np.full(len(signal), k))
         arrays = {key: np.concatenate(values) for key, values in rows.items()}
@@ -93,7 +100,7 @@ class StampRecordingConverter:
         if not everything:
             keep = arrays["role"] >= 0
             arrays = {key: values[keep] for key, values in arrays.items()}
-        for key in ("signal", "force"):
+        for key in ("signal", "force", "depth"):
             arrays[key] = arrays[key].astype(np.float32)
         path = Path(path or DATA_DIR / ShapeClassificationDataset.FILE)
         path.parent.mkdir(parents=True, exist_ok=True)

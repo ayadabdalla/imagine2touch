@@ -2,8 +2,9 @@
 Can the sensor tell shapes smaller than itself apart?  (Paper: Table I.)
 
 The stamps are pressed into the mounted sensor (datasets/shape_classification_dataset.py), and a
-small network names the stamp from one touch signal.  Data, split and training are those of the
-paper's code: 181 presses of every stamp train the network, and 50 of every stamp test it.
+small network names the stamp from one touch signal.  Data and split are those of the paper's
+code: of every stamp 181 presses train the network, 25 are set aside for validation and 50 test
+it.  The paper states "trained on 80%", which is the 181 and the 25 together.
 
 case "balanced split" one record per stamp and one for all stamps: the share of test presses that
                       are named correctly
@@ -23,7 +24,7 @@ class ShapeClassification(Experiment):
 
     def classifier(self, seed):
         s = self.settings
-        return ShapeClassifier(s.network, len(self.bench.stamps.STAMPS), s.epochs, s.lr, s.batch_size, s.seed + seed)
+        return ShapeClassifier(s.network, len(self.bench.stamps.STAMPS), s.epochs, s.lr, s.batch_size, seed)
 
     def score(self, seed, case, data, architecture, model, signal, label, **more):
         """Records of a trained classifier on a test set: one per stamp in it and one for all."""

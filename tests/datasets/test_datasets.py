@@ -12,7 +12,7 @@ def test_recording_helpers(tmp_path):
     points = np.random.default_rng(0).normal(size=(40, 3))
     PointCloudFile.write(tmp_path / "scan.pcd", points)
     assert PointCloudFile.read(tmp_path / "scan.pcd") == pytest.approx(points, abs=1e-6)
-    assert Recording(tmp_path / "star_v_6", 1).shape == "star" and Recording(tmp_path / "star", 1).shape == "star"
+    assert Recording(tmp_path / "star_v_1", 1).shape == "star" and Recording(tmp_path / "star", 1).shape == "star"
     assert Recording.centre_crop(np.ones((52, 53))).shape == (48, 48) and Recording.centre_crop(np.ones((40, 40))).sum() == 1600
     assert ApproachOutcome.label_of(2) == "sensor" and ApproachOutcome.label_of(0) == "unknown" and ApproachOutcome.label_of(1) == "aborted" and ApproachOutcome.SENSOR == 2
 
@@ -48,3 +48,6 @@ def test_the_presses_of_the_stamps():
     assert [int((s.role == r).sum()) for r in ("train", "validation", "test")] == [905, 125, 250]       # the paper's split
     assert all(int(((s.role == "test") & (s.stamp == k)).sum()) == 50 for k in range(len(s.STAMPS)))
     assert np.bincount(s.stamp[s.balanced(100, np.random.default_rng(0))]).tolist() == [100] * 5
+    if s.depth is not None:                                                     # the depth column is optional
+        deep, shallow = s.depth > 1.0e-3, s.depth < 0.4e-3
+        assert np.abs(s.force[deep]).mean() > np.abs(s.force[shallow]).mean()   # a deeper press takes more force

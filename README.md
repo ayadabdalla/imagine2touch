@@ -26,7 +26,8 @@ A second dataset asks whether the sensor can tell shapes smaller than itself apa
 
 <p align="center">
   <img src="assets/stamps_overview.png" alt="The five stamps and what each does to the sensor" width="100%">
-  <br><em>The shape classification dataset: 1,280 presses of five stamps into the mounted sensor. A
+  <br><em>The shape classification dataset: 1,280 presses of five stamps into the mounted sensor, each to
+  one of four set depths 0.3 mm apart, not to a set force. A
   stamp fits the finger in two ways, turned by 180 degrees to each other; which one was used was not recorded.</em>
 </p>
 
@@ -62,7 +63,8 @@ The benchmark runs the paper's two experiments:
 
 - **Shape classification** (Table I): name the stamp pressed into the sensor from its signal.
 - **Object recognition** (Table II): done on the robot in the paper; here a simulated robot repeats it on
-  the recorded scans and signals, as an alternative that needs no hardware.
+  the recorded scans and signals, as an alternative that needs no hardware. Both of the paper's
+  object sets are covered: the primitives and the tools.
 
 and measures two parts of its method, which the paper describes but does not evaluate by themselves:
 
@@ -72,14 +74,62 @@ and measures two parts of its method, which the paper describes but does not eva
 
 Every setting is in `configs/benchmark.yaml`. A stopped run continues where it left off.
 
-Object recognition runs on the v6 sessions. Download
-[`imagine2touch_v6.npz`](https://drive.google.com/file/d/1IrnuDb2HVsy9HwKKDEdWbHdBmIlNUgbA/view?usp=drive_link)
-(13 MB) into `data/`, then:
+The weights of the five recognition models, `touch_scan_seed0.pt` to `touch_scan_seed4.pt` (one per
+seed, 20 MB each), are in
+[this folder](https://drive.google.com/drive/folders/1P66Ftne3HvHGfzJrjKy9DqyUtpefgg3b?usp=sharing).
+Put into `results/benchmark/models/`, the benchmark uses them and gives the recognition tables below
+exactly; without them it trains its own, which differ slightly from one computer to another.
+`TouchModel.load(path)` loads one for use elsewhere.
 
-```bash
-python scripts/run_benchmark.py --config configs/v6.yaml --results results/v6
-python scripts/report_benchmark.py --results results/v6
-```
+The numbers below are what these commands give: means over five seeds (0 to 4, set in
+`configs/benchmark.yaml`), each seed training its own models.
+
+**Shape classification**: share of the test presses named correctly.
+
+| | T | circle | angle | triangle | cross | all |
+|:--|--:|--:|--:|--:|--:|--:|
+| This repository | 0.84 | 0.91 | 0.92 | 0.86 | 0.92 | 0.89 |
+| Paper, Table I | 0.91 | 0.90 | 0.90 | 0.95 | 0.94 | 0.92 |
+| Chance | 0.20 | 0.20 | 0.20 | 0.20 | 0.20 | 0.20 |
+
+The data and its split are those of the paper's code: 256 presses of every stamp, of which 181 train
+the classifier, 25 are set aside for validation and 50 test it. The paper states "trained on 80%",
+which is the 181 and the 25 together. The paper reports one training; this row is the mean of five
+(seeds 0 to 4), which lie between 0.84 and 0.93 for all stamps.
+
+**Object recognition, primitives**: the simulated robot touches parallelogram, square or star ten times and chooses
+among the three. One such round of ten touches is a trial; each object gets twenty trials with each of
+the five models. The model is trained on flower and hexagon only, on
+depth images of their scans. Where the sensor meets the object, both methods are scored from the real
+touch recorded nearest to it. The columns give the share of single touches that vote for the touched
+object, and the share of trials that name it after ten touches.
+
+| | parallelogram | square | star | mean | named after ten touches (trials) |
+|:--|--:|--:|--:|--:|--:|
+| Touch model | 61% | 47% | 55% | 54% | 72% (300) |
+| Proprioception | 23% | 70% | 59% | 50% | 59% (300) |
+| Paper's robot, touch model | 40% | 70% | 40% | 50% | 100% (3) |
+| Paper's robot, proprioception | 30% | 20% | 20% | 23% | 0% (3) |
+| Chance | 33% | 33% | 33% | 33% | 33% |
+
+The paper's rows are one run of ten touches per object on the real robot (Table II). The paper reports
+the share of touches; which object each run named is read from its votes, kept in the original
+repository. A single such trial of the simulated robot varies by about 15 points.
+
+**Object recognition, tools**: the same test and the same model with the paper's second set, a box
+cutter and a hanger. The robot touches the cutter; the hanger was only scanned, so it cannot
+be the touched object.
+
+| | votes for the cutter | named after ten touches (trials) |
+|:--|--:|--:|
+| Touch model | 76% | 87% (100) |
+| Proprioception | 79% | 78% (100) |
+| Paper's robot, touch model | 60% | 100% (1) |
+| Paper's robot, proprioception | 100% | 100% (1) |
+| Chance | 50% | 50% |
+
+The paper's Table II gives 70% and 80% for the tools: the means of this run on the cutter and of
+one on the hanger (80% and 60%).
 
 ## Recognising objects by touch
 
